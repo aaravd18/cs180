@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CS 180 - Aarav Desai</title>
+<meta name="description" content="Aarav Desai's CS 180 project portfolio">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,700;1,6..72,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;1,8..60,300;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --global-base-color: #2f7f93;
+    --global-bg-color: #fff;
+    --global-border-color: #f2f3f3;
+    --global-text-color: #494e52;
+    --global-text-color-light: #bdc1c4;
+    --global-link-color: #0ea1c5;
+    --global-code-background-color: #fafafa;
+  }
+
+  *{box-sizing:border-box;}
+
+  html{background-color:var(--global-bg-color);font-size:16px;}
+
+  body{
+    margin:0;
+    background:var(--global-bg-color);
+    color:var(--global-text-color);
+    font-family:'Source Serif 4', Georgia, serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  a{color:var(--global-link-color); text-decoration:none;}
+  a:hover{text-decoration:underline;}
+
+  h1, h2, h3{
+    font-family:'Newsreader', Georgia, serif;
+    color:var(--global-text-color);
+    font-weight:600;
+  }
+
+  /* ---------- MASTHEAD ---------- */
+  .masthead{
+    width:100%;
+    background:var(--global-bg-color);
+    border-bottom:1px solid var(--global-border-color);
+  }
+  .masthead__inner-wrap{
+    max-width:925px;
+    margin:0 auto;
+    padding:0.75em 1.5em;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    font-family:'Source Serif 4', Georgia, serif;
+  }
+  .site-title{
+    font-family:'Newsreader', Georgia, serif;
+    font-weight:600;
+    font-size:1.2em;
+    color:var(--global-text-color);
+  }
+  .masthead nav ul{
+    list-style:none;
+    display:flex;
+    gap:1.75em;
+    margin:0;
+    padding:0;
+  }
+  .masthead nav a{
+    color:var(--global-text-color);
+    font-size:1.05em;
+  }
+  .masthead nav a:hover{
+    color:var(--global-base-color);
+    text-decoration:none;
+  }
+
+  /* ---------- MAIN ---------- */
+  .page__inner-wrap{
+    max-width:925px;
+    margin:0 auto;
+    padding:3rem 1.5em 4rem;
+  }
+
+  header.intro{
+    margin-bottom:2.5rem;
+    padding-bottom:2rem;
+    border-bottom:1px solid var(--global-border-color);
+  }
+  .eyebrow{
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    font-size:0.8em;
+    color:var(--global-base-color);
+    margin:0 0 0.75em;
+    font-family:'Source Serif 4', Georgia, serif;
+  }
+  h1.page__title{
+    margin:0 0 0.5em;
+    line-height:1.15;
+    font-size:2.1em;
+  }
+  .intro p{
+    max-width:65ch;
+    font-size:1.05em;
+    margin:0.75em 0 0;
+  }
+
+  /* ---------- PROJECT LIST ---------- */
+  section.projects h2{
+    font-size:1.4em;
+    margin:0 0 1.5em;
+  }
+
+  ol.proj-list{
+    list-style:none;
+    margin:0;
+    padding:0;
+    display:flex;
+    flex-direction:column;
+    gap:1em;
+  }
+
+  .proj{
+    display:grid;
+    grid-template-columns:56px 1fr auto;
+    align-items:center;
+    gap:1.25em;
+    border:1px solid var(--global-border-color);
+    background:var(--global-code-background-color);
+    padding:1.1em 1.3em;
+    text-decoration:none;
+    color:inherit;
+    border-radius:4px;
+    transition:border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  }
+  a.proj:hover{
+    border-color:var(--global-base-color);
+    box-shadow:0 0 10px rgba(0,0,0,0.06);
+    text-decoration:none;
+  }
+  .proj-num{
+    font-family:'Newsreader', Georgia, serif;
+    font-size:1.1em;
+    color:var(--global-base-color);
+    border:1px solid var(--global-base-color);
+    border-radius:4px;
+    padding:0.35em 0;
+    text-align:center;
+  }
+  .proj-body h3{
+    margin:0 0 0.25em;
+    font-size:1.1em;
+  }
+  .proj-status{
+    font-size:0.8em;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    color:var(--global-text-color-light);
+    border:1px solid var(--global-border-color);
+    border-radius:4px;
+    padding:0.3em 0.7em;
+    white-space:nowrap;
+  }
+  .proj-status.live{
+    color:var(--global-base-color);
+    border-color:var(--global-base-color);
+  }
+  .proj[aria-disabled="true"]{
+    opacity:0.6;
+    cursor:default;
+  }
+
+  @media (max-width:560px){
+    .proj{grid-template-columns:44px 1fr;}
+    .proj-status{grid-column:2 / 3; justify-self:start; margin-top:0.5em;}
+  }
+
+  /* ---------- FOOTER ---------- */
+  .page__footer{
+    border-top:1px solid var(--global-border-color);
+  }
+  .page__footer-copyright{
+    max-width:925px;
+    margin:0 auto;
+    padding:1.5em;
+    font-size:0.85em;
+    color:var(--global-text-color-light);
+  }
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <span class="site-title">CS 180</span>
+    <nav>
+      <ul>
+        <li><a href="https://aaravd18.github.io/">About Me</a></li>
+        <li><a href="https://aaravd18.github.io/blog">Personal Blog</a></li>
+      </ul>
+    </nav>
+  </div>
+</div>
+
+<div class="page__inner-wrap">
+  <header class="intro">
+    <p class="eyebrow" style="margin-bottom: 24px;">
+    Intro to Computer Vision &amp; Computational Photography
+    </p>
+    <h1 class="page__title" style="margin-top: 0;">
+        Aarav's CS 180 Portfolio
+    </h1>
+    <p>A collection of my projects for CS 180 at UC Berkeley, covering computational photography and computer vision.</p>
+  </header>
+
+  <section class="projects" id="projects">
+    <h2>Projects</h2>
+    <ol class="proj-list">
+      <li>
+        <span class="proj" aria-disabled="true">
+          <span class="proj-num">00</span>
+          <span class="proj-body">
+            <h3>Becoming Friends with My Camera</h3>
+          </span>
+          <span class="proj-status">Coming soon</span>
+        </span>
+      </li>
+      <li>
+        <span class="proj" aria-disabled="true">
+          <span class="proj-num">01</span>
+          <span class="proj-body">
+            <h3>Images of the Russian Empire</h3>
+          </span>
+          <span class="proj-status">Coming soon</span>
+        </span>
+      </li>
+      <li>
+        <span class="proj" aria-disabled="true">
+          <span class="proj-num">02</span>
+          <span class="proj-body">
+            <h3>Fun with Filters and Frequencies</h3>
+          </span>
+          <span class="proj-status">Coming soon</span>
+        </span>
+      </li>
+      <li>
+        <span class="proj" aria-disabled="true">
+          <span class="proj-num">03</span>
+          <span class="proj-body">
+            <h3>Fun with Diffusion Models</h3>
+          </span>
+          <span class="proj-status">Coming soon</span>
+        </span>
+      </li>
+      <li>
+        <span class="proj" aria-disabled="true">
+          <span class="proj-num">04</span>
+          <span class="proj-body">
+            <h3>(Auto)stitching and Photo Mosaics</h3>
+          </span>
+          <span class="proj-status">Coming soon</span>
+        </span>
+      </li>
+      <li>
+        <span class="proj" aria-disabled="true">
+          <span class="proj-num">05</span>
+          <span class="proj-body">
+            <h3>Final Project</h3>
+          </span>
+          <span class="proj-status">Coming soon</span>
+        </span>
+      </li>
+    </ol>
+  </section>
+</div>
+
+<div class="page__footer">
+  <div class="page__footer-copyright">&copy; 2026 Aarav Desai</div>
+</div>
+
+</body>
+</html>
