@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project 0: Becoming Friends with My Camera</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,700;1,6..72,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;1,8..60,300;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --global-base-color: #2f7f93;
+    --global-bg-color: #fff;
+    --global-border-color: #f2f3f3;
+    --global-text-color: #494e52;
+    --global-text-color-light: #bdc1c4;
+    --global-link-color: #0ea1c5;
+    --global-code-background-color: #fafafa;
+  }
+
+  *{box-sizing:border-box;}
+
+  html{background-color:var(--global-bg-color);font-size:16px;}
+
+  body{
+    margin:0;
+    background:var(--global-bg-color);
+    color:var(--global-text-color);
+    font-family:'Source Serif 4', Georgia, serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  a{color:var(--global-link-color); text-decoration:none;}
+  a:hover{text-decoration:underline;}
+
+  h1, h2, h3{
+    font-family:'Newsreader', Georgia, serif;
+    color:var(--global-text-color);
+    font-weight:600;
+  }
+
+  /* ---------- MASTHEAD ---------- */
+  .masthead{
+    width:100%;
+    background:var(--global-bg-color);
+    border-bottom:1px solid var(--global-border-color);
+  }
+  .masthead__inner-wrap{
+    max-width:800px;
+    margin:0 auto;
+    padding:0.75em 1.5em;
+    font-family:'Source Serif 4', Georgia, serif;
+  }
+  .masthead nav a{
+    color:var(--global-text-color);
+    font-size:1em;
+  }
+  .masthead nav a:hover{
+    color:var(--global-base-color);
+    text-decoration:none;
+  }
+
+  /* ---------- MAIN ---------- */
+  .page__inner-wrap{
+    max-width:800px;
+    margin:0 auto;
+    padding:3rem 1.5em 4rem;
+  }
+
+  h1.page__title{
+    margin:0 0 0.25em;
+    line-height:1.15;
+    font-size:2em;
+  }
+  p.date{
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    font-size:0.8em;
+    color:var(--global-base-color);
+    margin:0 0 2rem;
+  }
+
+  .intro{
+    font-size:1.05em;
+    margin-bottom:2.5rem;
+  }
+
+  section{
+    margin-bottom:3rem;
+    padding-bottom:2.5rem;
+    border-bottom:1px solid var(--global-border-color);
+  }
+  section:last-of-type{
+    border-bottom:none;
+  }
+
+  h2{
+    font-size:1.4em;
+    margin:0 0 1em;
+  }
+  h3{
+    font-size:1.1em;
+    margin:1.5em 0 0.75em;
+  }
+
+  .pair{
+    display:flex;
+    gap:1.5em;
+    flex-wrap:wrap;
+    margin-bottom:1em;
+  }
+  .pair figure{
+    flex:1 1 260px;
+    margin:0;
+  }
+  figure.solo{
+    margin:0 0 1em;
+  }
+  figure.solo video{
+    max-width:420px;
+    margin:0;
+  }
+
+  figure img,
+  figure video{
+    width:100%;
+    display:block;
+    border-radius:4px;
+    border:1px solid var(--global-border-color);
+  }
+
+  .pair figure img{
+    width:auto;
+    height:320px;
+    max-width:100%;
+    object-fit:contain;
+  }
+
+  .placeholder{
+    width:100%;
+    aspect-ratio:4/3;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--global-code-background-color);
+    border:1px dashed var(--global-text-color-light);
+    border-radius:4px;
+    color:var(--global-text-color-light);
+    font-size:0.85em;
+    text-align:center;
+    padding:1em;
+  }
+
+  figcaption{
+    font-size:0.9em;
+    color:var(--global-text-color);
+    opacity:0.85;
+    margin-top:0.5em;
+  }
+
+  section p{
+    font-size:1em;
+    margin:1em 0;
+  }
+
+  /* ---------- FOOTER ---------- */
+  .page__footer{
+    border-top:1px solid var(--global-border-color);
+  }
+  .page__footer-copyright{
+    max-width:800px;
+    margin:0 auto;
+    padding:1.5em;
+    font-size:0.85em;
+    color:var(--global-text-color-light);
+  }
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <nav><a href="../../index.html">&larr; Back to portfolio</a></nav>
+  </div>
+</div>
+
+<div class="page__inner-wrap">
+  <h1 class="page__title">Project 0: Becoming Friends with My Camera</h1>
+  <p class="date">CS 180, Fall 2026</p>
+
+  <p class="intro">
+    <!-- short intro: what these three exercises are about -->
+  </p>
+
+  <section>
+    <h2>Part 1: Selfie: The Wrong Way vs. The Right Way</h2>
+
+    <div class="pair">
+      <figure>
+        <img src="media/sec1.1.jpg" alt="Close-up selfie">
+        <figcaption><strong>Close up.</strong> <!-- distance, focal length --></figcaption>
+      </figure>
+      <figure>
+        <img src="media/sec1.2.jpg" alt="Portrait from a few feet away">
+        <figcaption><strong>A foot back but zoomed in.</strong> <!-- distance, focal length --></figcaption>
+      </figure>
+    </div>
+    <p>
+      <!-- explanation -->
+    </p>
+  </section>
+
+  <section>
+    <h2>Part 2: Architectural Perspective</h2>
+
+    <div class="pair">
+      <figure>
+        <img src="media/sec2.1.jpg" alt="Building from far away">
+        <figcaption><strong>Close up.</strong> <!-- distance, focal length --></figcaption>
+      </figure>
+      <figure>
+        <img src="media/sec2.2.jpg" alt="Building up close">
+        <figcaption><strong>Farther away but zoomed in.</strong> <!-- distance, focal length --></figcaption>
+      </figure>
+    </div>
+    <p>
+      <!-- explanation -->
+    </p>
+  </section>
+
+  <section>
+    <h2>Part 3: Dolly Zoom</h2>
+
+    <figure class="solo">
+      <video src="media/sec3.mp4" autoplay loop muted playsinline></video>
+      <figcaption><strong>Dolly zoom. Interesting how the shape of the bottle appears to morph.</strong> <!-- number of frames, focal range --></figcaption>
+    </figure>
+
+    <p>
+      <!-- explanation -->
+    </p>
+  </section>
+</div>
+
+<div class="page__footer">
+  <div class="page__footer-copyright">&copy; 2026 Aarav Desai</div>
+</div>
+
+</body>
+</html>
