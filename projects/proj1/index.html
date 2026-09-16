@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project 1: Images of the Russian Empire</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,700;1,6..72,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;1,8..60,300;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --global-base-color: #2f7f93;
+    --global-bg-color: #fff;
+    --global-border-color: #f2f3f3;
+    --global-text-color: #494e52;
+    --global-text-color-light: #bdc1c4;
+    --global-link-color: #0ea1c5;
+    --global-code-background-color: #fafafa;
+  }
+
+  *{box-sizing:border-box;}
+
+  html{background-color:var(--global-bg-color);font-size:16px;}
+
+  body{
+    margin:0;
+    background:var(--global-bg-color);
+    color:var(--global-text-color);
+    font-family:'Source Serif 4', Georgia, serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  a{color:var(--global-link-color); text-decoration:none;}
+  a:hover{text-decoration:underline;}
+
+  h1, h2, h3{
+    font-family:'Newsreader', Georgia, serif;
+    color:var(--global-text-color);
+    font-weight:600;
+  }
+
+  /* ---------- MASTHEAD ---------- */
+  .masthead{
+    width:100%;
+    background:var(--global-bg-color);
+    border-bottom:1px solid var(--global-border-color);
+  }
+  .masthead__inner-wrap{
+    max-width:800px;
+    margin:0 auto;
+    padding:0.75em 1.5em;
+    font-family:'Source Serif 4', Georgia, serif;
+  }
+  .masthead nav a{
+    color:var(--global-text-color);
+    font-size:1em;
+  }
+  .masthead nav a:hover{
+    color:var(--global-base-color);
+    text-decoration:none;
+  }
+
+  /* ---------- MAIN ---------- */
+  .page__inner-wrap{
+    max-width:800px;
+    margin:0 auto;
+    padding:3rem 1.5em 4rem;
+  }
+
+  h1.page__title{
+    margin:0 0 0.25em;
+    line-height:1.15;
+    font-size:2em;
+  }
+  p.date{
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    font-size:0.8em;
+    color:var(--global-base-color);
+    margin:0 0 2rem;
+  }
+
+  .intro{
+    font-size:1.05em;
+    margin-bottom:2.5rem;
+  }
+
+  section{
+    margin-bottom:3rem;
+    padding-bottom:2.5rem;
+    border-bottom:1px solid var(--global-border-color);
+  }
+  section:last-of-type{
+    border-bottom:none;
+  }
+
+  h2{
+    font-size:1.4em;
+    margin:0 0 1em;
+  }
+  h3{
+    font-size:1.1em;
+    margin:1.5em 0 0.75em;
+  }
+
+  section p{
+    font-size:1em;
+    margin:1em 0;
+  }
+
+  section ul, section ol{
+    font-size:1em;
+    margin:1em 0;
+    padding-left:1.4em;
+  }
+  section li{
+    margin:0.35em 0;
+  }
+
+  code{
+    font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    background:var(--global-code-background-color);
+    padding:0.15em 0.4em;
+    border-radius:3px;
+    font-size:0.9em;
+  }
+
+  .pair{
+    display:flex;
+    gap:1.5em;
+    flex-wrap:wrap;
+    margin-bottom:1em;
+  }
+  .pair figure{
+    flex:1 1 260px;
+    margin:0;
+  }
+  .grid-3{
+    display:flex;
+    gap:1.5em;
+    flex-wrap:wrap;
+    margin-bottom:1em;
+  }
+  .grid-3 figure{
+    flex:1 1 200px;
+    margin:0;
+  }
+  .grid-2{
+    display:flex;
+    gap:1.5em;
+    flex-wrap:wrap;
+    margin-bottom:1em;
+  }
+  .grid-2 figure{
+    flex:1 1 320px;
+    margin:0;
+  }
+  figure.solo{
+    margin:0 0 1em;
+  }
+
+  figure img{
+    width:100%;
+    display:block;
+    border-radius:4px;
+    border:1px solid var(--global-border-color);
+  }
+
+  .placeholder{
+    width:100%;
+    aspect-ratio:3/4;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--global-code-background-color);
+    border:1px dashed var(--global-text-color-light);
+    border-radius:4px;
+    color:var(--global-text-color-light);
+    font-size:0.85em;
+    text-align:center;
+    padding:1em;
+  }
+
+  figcaption{
+    font-size:0.9em;
+    color:var(--global-text-color);
+    opacity:0.85;
+    margin-top:0.5em;
+    text-align:center;
+  }
+
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:0.92em;
+    margin:1em 0 1.5em;
+  }
+  th, td{
+    text-align:left;
+    padding:0.5em 0.75em;
+    border-bottom:1px solid var(--global-border-color);
+  }
+  th{
+    font-family:'Newsreader', Georgia, serif;
+    font-weight:600;
+    color:var(--global-text-color);
+  }
+
+  .note{
+    background:var(--global-code-background-color);
+    border-left:3px solid var(--global-base-color);
+    padding:0.75em 1em;
+    font-size:0.95em;
+    margin:1.5em 0;
+  }
+
+  /* ---------- FOOTER ---------- */
+  .page__footer{
+    border-top:1px solid var(--global-border-color);
+  }
+  .page__footer-copyright{
+    max-width:800px;
+    margin:0 auto;
+    padding:1.5em;
+    font-size:0.85em;
+    color:var(--global-text-color-light);
+  }
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <nav><a href="../../index.html">&larr; Back to portfolio</a></nav>
+  </div>
+</div>
+
+<div class="page__inner-wrap">
+  <h1 class="page__title">Project 1: Images of the Russian Empire</h1>
+  <p class="date">CS 180, Fall 2026</p>
+
+  <p class="intro">
+    In the early 1900s, Sergei Mikhailovich Prokudin-Gorskii traveled across the Russian Empire documenting everything from cathedrals to everyday life. For each scene, he captured three black-and-white exposures through red, green, and blue filters, with the idea that they could eventually be combined to reconstruct the original colors.
+    
+    <br><br>In theory, all we must do is take the three images, treat them as the red, green, and blue channels, and stack them together. The problem is that the camera and subjects could move slightly between each exposure, so the three images don't always line up. If we stack them directly, everything ends up with weird colored outlines. The goal of this project is to figure out how much each image has shifted, move them back into place, and then combine them to recover the original color photograph.
+  </p>
+
+  <section>
+    <h2>The Approach</h2>
+    <p>
+      Each glass plate scan is a single tall image containing three stacked grayscale exposures, in
+      B&nbsp;/&nbsp;G&nbsp;/&nbsp;R order from top to bottom. We do the following procedure:
+    </p>
+    <ol>
+      <li>Split the image into three equal thirds, which represent the B, G, and R channels.</li>
+      <li>Treat B as the reference channel, and search for the (x, y) pixel displacement that best
+        aligns G to B, and R to B.</li>
+      <li>Shift G and R by their best displacements (using <code>np.roll</code>) and combine the three
+        channels into a single RGB image.</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Single-Scale Search</h2>
+    <p>
+      For small JPEGs (fewer pixels), we can brute-force search a fixed neighbourhood of displacements. For every candidate shift
+      <code>(dy, dx)</code> with <code>dy</code> and <code>dx</code> each ranging from &minus;15 to 15,
+      we shift the whole moving channel using <code>np.roll</code>, then compare it to the reference
+      channel and give that shift a score. After checking all 31 &times; 31 = 961 possible shifts, we
+      just take whichever one scored best.
+    </p>
+    <p>
+      Before scoring, I also decided to crop off the outer 10% of the image on every side.
+      The glass plate scans usually have dark borders / scanning artifacts near the
+      edges that have nothing to do with the actual photo content. If we scored the full image including
+      those edges, the search could get fooled into aligning the borders instead of the picture
+      itself, so cropping them out first keeps the score focused on content that's actually useful for
+      alignment.
+    </p>
+    <p>We score each shift two different ways:</p>
+    <ul>
+      <li>
+        <strong>SSD (sum of squared differences)</strong>. For a given shift, we subtract the cropped
+        reference from the cropped shifted image, square every pixel difference, and add it all up.
+        If the two images line up perfectly this number is small,
+        and it grows the more the two images disagree pixel by pixel. Since smaller means better, we
+        keep track of the shift with the lowest SSD seen so far.
+      </li>
+      <li>
+        <strong>NCC (normalized cross-correlation)</strong>. Here we first subtract the mean brightness
+        from each cropped image, so both are centered around zero. Then we take the sum of the
+        elementwise product of the two (basically a dot product treating the images as big vectors),
+        and divide that by the product of their norms (the square root of the sum of squares of each
+        image). This turns the score into something like a correlation coefficient between &minus;1 and
+        1, where 1 means the two images vary together perfectly. Because we mean-subtract and normalize
+        by each image's own magnitude, NCC doesn't care if one channel happens to be a bit brighter or
+        higher contrast than the other, it only cares whether the same patterns of light and dark show
+        up in the same places. Since higher is better here, we keep track of the shift with the highest
+        NCC score seen so far.
+      </li>
+    </ul>
+    <p>
+      Whichever shift ends up with the best score (lowest SSD or highest NCC) is what we apply
+      to produce the final aligned image.
+    </p>
+
+    <h3>Results</h3>
+    <p>
+      Results of the brute-force single-scale search on the provided <code>.jpg</code> images.
+      Displacements below are given as <code>(dx, dy)</code> relative to the B channel. Interestingly, the SSD (L2) and NCC metrics agree on the exact same displacement for our three sample images.
+    </p>
+
+    <div class="grid-3">
+      <figure>
+        <img src="media/cathedral.jpg" alt="Aligned cathedral image">
+        <figcaption><strong>cathedral.jpg</strong></figcaption>
+      </figure>
+      <figure>
+        <img src="media/monastery.jpg" alt="Aligned monastery image">
+        <figcaption><strong>monastery.jpg</strong></figcaption>
+      </figure>
+      <figure>
+        <img src="media/tobolsk.jpg" alt="Aligned tobolsk image">
+        <figcaption><strong>tobolsk.jpg</strong></figcaption>
+      </figure>
+    </div>
+
+    <table>
+      <thead>
+        <tr><th>Image</th><th>G offset (x, y)</th><th>R offset (x, y)</th><th>Metric</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>cathedral.jpg</td><td>(2, 5)</td><td>(3, 12)</td><td>SSD &amp; NCC (identical)</td></tr>
+        <tr><td>monastery.jpg</td><td>(2, &minus;3)</td><td>(2, 3)</td><td>SSD &amp; NCC (identical)</td></tr>
+        <tr><td>tobolsk.jpg</td><td>(3, 3)</td><td>(3, 6)</td><td>SSD &amp; NCC (identical)</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>Multi-Scale Pyramid</h2>
+    <p>
+      Checking every shift in a &plusmn;15 pixel window is cheap, but the full-resolution TIFF scans
+      can need shifts of 50 to 100+ pixels. Brute-forcing a window that big over a multi-megapixel
+      image would mean scoring tens of thousands of shifts, each one over a huge image, which is way
+      too slow to be practical.
+    </p>
+    <p>
+      Instead we use recursion. The idea is that if we shrink both images down
+      enough, the true displacement between them also shrinks down to something small enough to brute
+      force cheaply, and then we can work our way back up to full resolution, refining the estimate a
+      little at each step along the way. Concretely, our pyramid alignment function works like this:
+    </p>
+    <ul>
+      <li>
+        <strong>Base case.</strong> Once both the height and width of the reference image are under
+        200 pixels, the images are small enough to just run the dense single-scale search directly.
+      </li>
+      <li>
+        <strong>Recursive case.</strong> Otherwise, we downsample both the moving and reference images
+        by half using <code>cv.resize</code>.
+      </li>
+      <li>
+        We then call our pyramid alignment recursively on the two downsampled images. This gives us
+        back a best-guess shift, but at half the current resolution.
+      </li>
+      <li>
+        Since the recursive call worked at half scale, we double that shift to bring it back to the
+        current resolution (a 1 pixel shift at half size corresponds to roughly a 2 pixel shift at full
+        size), and apply it to the moving image.
+      </li>
+      <li>
+        This doubled estimate is close, but not exact, since resizing loses precision and the coarser
+        level only had lower-resolution information to work with. So we run one more small search,
+        checking every shift in a 5&times;5 window (<code>dy</code> and <code>dx</code> each from
+        &minus;2 to 2) around the doubled estimate, using the same SSD or NCC scoring as before, to
+        pick up the last couple of pixels of correction.
+      </li>
+      <li>
+        Adding that small correction to the doubled estimate gives the final shift for this level of
+        the pyramid, which gets returned and doubled again one level up. By the time this unwinds all
+        the way back to the original full-resolution image, the pyramid has recovered a large total
+        displacement while only ever having to brute-force small search windows.
+      </li>
+    </ul>
+
+    <h3>Results</h3>
+    <p>
+      Results of the coarse-to-fine pyramid alignment on the full set of high-resolution glass plate
+      scans, scored with NCC on raw RGB pixel values.
+    </p>
+
+    <div class="grid-2">
+      <figure>
+        <img src="media/pyramid/cathedral_out.jpg" alt="Aligned cathedral image">
+        <figcaption><strong>Cathedral</strong></figcaption>
+      </figure>
+      <figure>
+        <img src="media/pyramid/church_out.jpg" alt="Aligned church image">
+        <figcaption><strong>Church</strong></figcaption>
+      </figure>
+    </div>
+    <div class="grid-2">
+      <figure>
+        <img src="media/pyramid/emir_out.jpg" alt="Misaligned emir image">
+        <figcaption><strong style="color:#c0392b;">Emir &#9888;&#65039;</strong></figcaption>
+      </figure>
+      <figure>
+        <img src="media/pyramid/harvesters_out.jpg" alt="Aligned harvesters image">
+        <figcaption><strong>Harvesters</strong></figcaption>
+      </figure>
+    </div>
+    <div class="grid-2">
+      <figure>
+        <img src="media/pyramid/icon_out.jpg" alt="Aligned icon image">
+        <figcaption><strong>Icon</strong></figcaption>
+      </figure>
+      <figure>
+        <img src="media/pyramid/ilemselga_out.jpg" alt="Aligned ilemselga image">
+        <figcaption><strong>Ilemselga</strong></figcaption>
+      </figure>
+    </div>
+    <div class="grid-2">
+      <figure>
+        <img src="media/pyramid/melons_out.jpg" alt="Aligned melons image">
+        <figcaption><strong>Melons</strong></figcaption>
+      </figure>
+      <figure>
+        <img src="media/pyramid/monastery_out.jpg" alt="Aligned monastery image">
+        <figcaption><strong>Monastery</strong></figcaption>
+      </figure>
+    </div>
+    <div class="grid-2">
+      <figure>
+        <img src="media/pyramid/religous_painting_out.jpg" alt="Aligned religious painting image">
+        <figcaption><strong>Religious Painting</strong></figcaption>
+      </figure>
+      <figure>
+        <img src="media/pyramid/self_portrait_out.jpg" alt="Aligned self portrait image">
+        <figcaption><strong>Self Portrait</strong></figcaption>
+      </figure>
+    </div>
+    <div class="grid-2">
+      <figure>
+        <img src="media/pyramid/siren_out.jpg" alt="Aligned siren image">
+        <figcaption><strong>Siren</strong></figcaption>
+      </figure>
+      <figure>
+        <img src="media/pyramid/three_generations_out.jpg" alt="Aligned three generations image">
+        <figcaption><strong>Three Generations</strong></figcaption>
+      </figure>
+    </div>
+    <div class="grid-2">
+      <figure>
+        <img src="media/pyramid/tobolsk_out.jpg" alt="Aligned tobolsk image">
+        <figcaption><strong>Tobolsk</strong></figcaption>
+      </figure>
+      <figure>
+        <img src="media/pyramid/wharf_out.jpg" alt="Aligned wharf image">
+        <figcaption><strong>Wharf</strong></figcaption>
+      </figure>
+    </div>
+
+    <table>
+      <thead>
+        <tr><th>Image</th><th>G offset (x, y)</th><th>R offset (x, y)</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Cathedral</td><td>(2, 5)</td><td>(3, 12)</td></tr>
+        <tr><td>Church</td><td>(4, 25)</td><td>(&minus;4, 58)</td></tr>
+        <tr><td style="color:#c0392b; font-weight:bold;">Emir &#9888;&#65039;</td><td>(24, 49)</td><td>(&minus;455, 416)</td></tr>
+        <tr><td>Harvesters</td><td>(17, 60)</td><td>(13, 124)</td></tr>
+        <tr><td>Icon</td><td>(17, 41)</td><td>(23, 89)</td></tr>
+        <tr><td>Ilemselga</td><td>(7, 40)</td><td>(11, 130)</td></tr>
+        <tr><td>Melons</td><td>(11, 82)</td><td>(13, 178)</td></tr>
+        <tr><td>Monastery</td><td>(2, &minus;3)</td><td>(2, 3)</td></tr>
+        <tr><td>Religious Painting</td><td>(3, 28)</td><td>(7, 68)</td></tr>
+        <tr><td>Self Portrait</td><td>(29, 79)</td><td>(37, 176)</td></tr>
+        <tr><td>Siren</td><td>(&minus;6, 49)</td><td>(&minus;25, 96)</td></tr>
+        <tr><td>Three Generations</td><td>(14, 53)</td><td>(11, 112)</td></tr>
+        <tr><td>Tobolsk</td><td>(3, 3)</td><td>(3, 6)</td></tr>
+        <tr><td>Wharf</td><td>(&minus;7, 15)</td><td>(&minus;16, 83)</td></tr>
+      </tbody>
+    </table>
+
+    <div class="note">
+      <strong>&#9888;&#65039; Failure on Emir.</strong> The R-channel offset the search
+      converged on (&minus;455, 416) is wildly outside the range of every other image and produces
+      an obviously incorrect result. My guess is that the R and B exposures of this plate differ enough in
+      brightness or contrast that raw-pixel NCC/SSD locks onto a random high-scoring match instead of
+      the true alignment. Aligning on image gradients or edges instead of raw intensities would likely
+      fix this, since that signal depends on structure rather than brightness.
+    </div>
+  </section>
+
+  <section>
+    <h2>Additional Examples</h2>
+    <p>
+      To test the algorithm on plates outside the provided set, we pulled a few additional glass plate
+      scans from the <a href="https://www.loc.gov/collections/prokudin-gorskii/?st=grid">Prokudin-Gorskii collection</a>
+      at the Library of Congress.
+    </p>
+
+    <div class="grid-3">
+      <figure>
+        <img src="media/pyramid/lugano.jpg" alt="Aligned lugano image">
+        <figcaption><strong>Lugano</strong><br>G: (13, 37), R: (38, 86)</figcaption>
+      </figure>
+      <figure>
+        <img src="media/pyramid/monument.jpg" alt="Aligned monument image">
+        <figcaption><strong>Monument</strong><br>G: (27, 14), R: (50, 85)</figcaption>
+      </figure>
+      <figure>
+        <img src="media/pyramid/sunset.jpg" alt="Aligned sunset image">
+        <figcaption><strong>Sunset</strong><br>G: (10, 46), R: (&minus;86, &minus;25)</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section>
+    <h2>Takeaways</h2>
+    <p>
+      The first observation is that there was little difference between SSD and NCC for this set. This makes sense because both metrics are ultimately looking for the shift that makes two channels most similar; NCC just normalizes for differences in brightness and contrast. When the channels mainly differ by position, there is little for that normalization to correct, so the two metrics tend to agree.
+    </p>
+    <p>
+      One hypothesis for Emir's failure is the pyramid's narrow search at finer levels. Each level only checks a 5×5 window around the estimate from the previous level, so an inaccurate coarse estimate may be difficult to recover from later. This suggests the useful direction for future work could be to change the signal used for alignment. For example, matching image gradients or edges instead of raw pixel intensities could make the initial estimate less sensitive to brightness differences between channels while keeping the pyramid efficient.
+    </p>
+  </section>
+</div>
+
+<div class="page__footer">
+  <div class="page__footer-copyright">&copy; 2026 Aarav Desai</div>
+</div>
+
+</body>
+</html>
