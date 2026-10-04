@@ -1,0 +1,912 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project 2: Fun with Filters and Frequencies</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,700;1,6..72,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;1,8..60,300;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --global-base-color: #2f7f93;
+    --global-bg-color: #fff;
+    --global-border-color: #f2f3f3;
+    --global-text-color: #494e52;
+    --global-text-color-light: #bdc1c4;
+    --global-link-color: #0ea1c5;
+    --global-code-background-color: #fafafa;
+  }
+
+  *{box-sizing:border-box;}
+
+  html{background-color:var(--global-bg-color);font-size:16px;}
+
+  body{
+    margin:0;
+    background:var(--global-bg-color);
+    color:var(--global-text-color);
+    font-family:'Source Serif 4', Georgia, serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  a{color:var(--global-link-color); text-decoration:none;}
+  a:hover{text-decoration:underline;}
+
+  h1, h2, h3{
+    font-family:'Newsreader', Georgia, serif;
+    color:var(--global-text-color);
+    font-weight:600;
+  }
+
+  /* ---------- MASTHEAD ---------- */
+  .masthead{
+    width:100%;
+    background:var(--global-bg-color);
+    border-bottom:1px solid var(--global-border-color);
+  }
+  .masthead__inner-wrap{
+    max-width:800px;
+    margin:0 auto;
+    padding:0.75em 1.5em;
+    font-family:'Source Serif 4', Georgia, serif;
+  }
+  .masthead nav a{
+    color:var(--global-text-color);
+    font-size:1em;
+  }
+  .masthead nav a:hover{
+    color:var(--global-base-color);
+    text-decoration:none;
+  }
+
+  /* ---------- MAIN ---------- */
+  .page__inner-wrap{
+    max-width:800px;
+    margin:0 auto;
+    padding:3rem 1.5em 4rem;
+  }
+
+  h1.page__title{
+    margin:0 0 0.25em;
+    line-height:1.15;
+    font-size:2em;
+  }
+  p.date{
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    font-size:0.8em;
+    color:var(--global-base-color);
+    margin:0 0 2rem;
+  }
+
+  .intro{
+    font-size:1.05em;
+    margin-bottom:2.5rem;
+  }
+
+  .part-header{
+    margin:0 0 2rem;
+  }
+  .part-header h1{
+    font-size:1.7em;
+    margin:0;
+  }
+
+  section{
+    margin-bottom:3rem;
+    padding-bottom:2.5rem;
+    border-bottom:1px solid var(--global-border-color);
+  }
+  section:last-of-type{
+    border-bottom:none;
+  }
+
+  h2{
+    font-size:1.4em;
+    margin:0 0 1em;
+  }
+  h3{
+    font-size:1.1em;
+    margin:1.5em 0 0.75em;
+  }
+
+  section p{
+    font-size:1em;
+    margin:1em 0;
+  }
+
+  section ul, section ol{
+    font-size:1em;
+    margin:1em 0;
+    padding-left:1.4em;
+  }
+  section li{
+    margin:0.35em 0;
+  }
+
+  code{
+    font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    background:var(--global-code-background-color);
+    padding:0.15em 0.4em;
+    border-radius:3px;
+    font-size:0.9em;
+  }
+
+  pre{
+    background:var(--global-code-background-color);
+    border:1px solid var(--global-border-color);
+    border-radius:4px;
+    padding:1em 1.2em;
+    overflow-x:auto;
+    margin:1em 0;
+  }
+  pre code{
+    background:none;
+    padding:0;
+    font-size:0.85em;
+  }
+
+  .pair{
+    display:flex;
+    gap:1.5em;
+    flex-wrap:wrap;
+    margin-bottom:1em;
+  }
+  .pair figure{
+    flex:1 1 260px;
+    margin:0;
+  }
+  .grid-3{
+    display:flex;
+    gap:1.5em;
+    flex-wrap:wrap;
+    margin-bottom:1em;
+  }
+  .grid-3 figure{
+    flex:1 1 200px;
+    margin:0;
+  }
+  .grid-2{
+    display:flex;
+    gap:1.5em;
+    flex-wrap:wrap;
+    margin-bottom:1em;
+  }
+  .grid-2 figure{
+    flex:1 1 320px;
+    margin:0;
+  }
+  .grid-4{
+    display:flex;
+    gap:1.5em;
+    flex-wrap:wrap;
+    margin-bottom:1em;
+  }
+  .grid-4 figure{
+    flex:1 1 150px;
+    margin:0;
+  }
+  figure.solo{
+    margin:0 0 1em;
+  }
+  .wide-row{
+    width:100vw;
+    max-width:1100px;
+    margin-left:calc(50% - 50vw);
+    margin-right:calc(50% - 50vw);
+    padding:0 1.5em;
+    box-sizing:border-box;
+  }
+  @media (min-width:1100px){
+    .wide-row{
+      margin-left:calc(50% - 550px);
+      margin-right:calc(50% - 550px);
+    }
+  }
+  img.pixelated{
+    image-rendering:pixelated;
+  }
+  figure.wide{
+    width:100vw;
+    max-width:1100px;
+    margin:0 auto 1em;
+    margin-left:calc(50% - 50vw);
+    margin-right:calc(50% - 50vw);
+  }
+  @media (min-width:1100px){
+    figure.wide{
+      margin-left:calc(50% - 550px);
+      margin-right:calc(50% - 550px);
+    }
+  }
+
+  figure img{
+    width:100%;
+    display:block;
+    border-radius:4px;
+    border:1px solid var(--global-border-color);
+  }
+
+  .placeholder{
+    width:100%;
+    aspect-ratio:3/4;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--global-code-background-color);
+    border:1px dashed var(--global-text-color-light);
+    border-radius:4px;
+    color:var(--global-text-color-light);
+    font-size:0.85em;
+    text-align:center;
+    padding:1em;
+  }
+
+  figcaption{
+    font-size:0.9em;
+    color:var(--global-text-color);
+    opacity:0.85;
+    margin-top:0.5em;
+    text-align:center;
+  }
+
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:0.92em;
+    margin:1em 0 1.5em;
+  }
+  th, td{
+    text-align:left;
+    padding:0.5em 0.75em;
+    border-bottom:1px solid var(--global-border-color);
+  }
+  th{
+    font-family:'Newsreader', Georgia, serif;
+    font-weight:600;
+    color:var(--global-text-color);
+  }
+
+  .note{
+    background:var(--global-code-background-color);
+    border-left:3px solid var(--global-base-color);
+    padding:0.75em 1em;
+    font-size:0.95em;
+    margin:1.5em 0;
+  }
+
+  .bw{
+    border-left:3px solid #c9972f;
+    background:#fdf8ef;
+    padding:0.75em 1em;
+    margin:1.5em 0;
+  }
+  .bw p:first-child{
+    margin-top:0;
+  }
+  .bw-label{
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    font-size:0.75em;
+    color:#c9972f;
+    font-weight:600;
+    display:block;
+    margin-bottom:0.5em;
+  }
+
+  /* ---------- FOOTER ---------- */
+  .page__footer{
+    border-top:1px solid var(--global-border-color);
+  }
+  .page__footer-copyright{
+    max-width:800px;
+    margin:0 auto;
+    padding:1.5em;
+    font-size:0.85em;
+    color:var(--global-text-color-light);
+  }
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <nav><a href="../../index.html">&larr; Back to portfolio</a></nav>
+  </div>
+</div>
+
+<div class="page__inner-wrap">
+  <h1 class="page__title">Project 2: Fun with Filters and Frequencies</h1>
+  <p class="date">CS 180, Fall 2026</p>
+
+  <p class="intro">
+    This project explores images through the lens of filtering and frequency!
+
+  <section>
+    <div class="part-header"><h1>Part 1: Fun with Filters</h1></div>
+
+    <h2>Part 1.1: Convolutions from Scratch</h2>
+    <p>
+      First we implement 2D convolution manually, without calling any built-in convolution function. We do 
+      a naive four-loop version that iterates over every output pixel and kernel combination, and a
+      faster two-loop version that vectorizes the innermost filter application. Both versions flip the kernel and zero-pad the image so that the output matches the input size
+      ("same" convolution).
+    </p>
+    <h3>Four loops vs. two loops</h3>
+    <pre><code>def four_loop_convolution(image, kernel):
+    height, width = image.shape
+    kh, kw = kernel.shape
+
+    # flip kernel
+    kernel = np.flip(kernel)
+
+    # pad so output is the same size as the input
+    ph = kh // 2
+    pw = kw // 2
+    pad_img = np.pad(image, ((ph, ph), (pw, pw)))
+
+    output = np.zeros((height, width))
+
+    for i in range(height):
+        for j in range(width):
+            for ki in range(kh):
+                for kj in range(kw):
+                    output[i, j] += pad_img[i + ki, j + kj] * kernel[ki, kj]
+
+    return output
+
+
+def two_loop_convolution(image, kernel):
+    height, width = image.shape
+    kh, kw = kernel.shape
+
+    kernel = np.flip(kernel)
+
+    ph = kh // 2
+    pw = kw // 2
+    pad_img = np.pad(image, ((ph, ph), (pw, pw)))
+
+    output = np.zeros((height, width))
+
+    for i in range(height):
+        for j in range(width):
+            patch = pad_img[i:i + kh, j:j + kw]
+            output[i, j] = np.sum(patch * kernel)
+
+    return output</code></pre>
+
+    <h3>Checking against SciPy</h3>
+    <p>
+      To validate both implementations, we run them on a small test image and kernel and compare against
+      <code>scipy.signal.convolve2d</code> with matching "same" / zero-fill boundary settings, using
+      <code>np.allclose</code> to check the outputs agree.
+    </p>
+    <pre><code>def test_conv_implementation():
+    image = np.array([
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9]
+    ], dtype=float)
+
+    kernel = np.array([
+        [1, 0, -1],
+        [1, 0, -1],
+        [1, 0, -1]
+    ], dtype=float)
+
+    out_four = four_loop_convolution(image, kernel)
+    out_two = two_loop_convolution(image, kernel)
+    out_scipy = convolve2d(image, kernel, mode="same", boundary="fill", fillvalue=0)
+
+    print("Four loop matches scipy:", np.allclose(out_four, out_scipy))
+    print("Two loop matches scipy:", np.allclose(out_two, out_scipy))</code></pre>
+    <pre><code>Four loop matches scipy: True
+Two loop matches scipy: True</code></pre>
+
+    <h3>Applying box, D<sub>x</sub>, and D<sub>y</sub> filters</h3>
+    <p>
+      We now apply a 9&times;9 box filter and the finite-difference operators D<sub>x</sub> = [1, 0, &minus;1] and
+      D<sub>y</sub> = [1, 0, &minus;1]<sup>T</sup> to a personal photograph. The box filter averages nearby pixel values, thus smoothing/blurring the image.
+      D<sub>x</sub> highlights vertical edges and D<sub>y</sub> highlights horizonal ones. We can see this in action with the background ocean waves being apparent in the D<sub>y</sub> image but not in the D<sub>x</sub> one.
+    </p>
+    <figure class="wide">
+      <img src="media/box.png" alt="Personal photo filtered with a 9x9 box filter, Dx, and Dy">
+    </figure>
+
+    <h3>Runtime comparison</h3>
+    <p>
+      We time the three convolution methods on the same photo, using a 5&times;5 box filter instead of the
+      9&times;9 above so the nested-loop versions finish in a reasonable amount of time.
+    </p>
+    <table>
+      <thead>
+        <tr><th>Method</th><th>Runtime (sec)</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Four loop</td><td>28.10</td></tr>
+        <tr><td>Two loop</td><td>6.49</td></tr>
+        <tr><td>SciPy <code>convolve2d</code></td><td>0.12</td></tr>
+      </tbody>
+    </table>
+    <p>
+    The four-loop implementation is the slowest because every single multiplication and addition is performed explicitly. The two-loop implementation is faster because we vectorise the inner computation over each patch and SciPy is the fastest because convolve2d runs optimized & pre-compiled code rather than Python loops. 
+    </p>
+    <h3>Boundary Handling</h3>
+    <p>
+    For boundary handling, my implementation zero-pads the image, meaning that pixels outside the image are assumed to have value 0, or black. This is visible in the 9×9 box-filtered image above as a thin black outline around the edges, since pixels near the boundary are averaged with these artificial black pixels. I matched this behavior in SciPy using <code>boundary="fill"</code>, <code>fillvalue=0</code>, and <code>mode="same"</code>, where <code>mode="same"</code> keeps the output dimensions equal to the input dimensions. Since zero padding can artificially darken the edges, SciPy also offers alternatives such as symmetric padding, which mirrors the image at its boundaries so edge pixels are averaged with similar nearby values rather than artificial black pixels.
+    </p>
+
+    <br>
+    <h2>Part 1.2: Finite Difference Operator</h2>
+    <p>
+      Using the cameraman image, we convolve with D<sub>x</sub> and D<sub>y</sub> directly to compute the
+      gradient in each direction, then combine them into a gradient magnitude image
+      <code>sqrt(Gx**2 + Gy**2)</code>. Binarizing this magnitude image with a threshold gives an edge map.
+    </p>
+
+    <div class="grid-3">
+      <figure>
+        <img src="media/cameraman.png" alt="Original cameraman image">
+        <figcaption>Original</figcaption>
+      </figure>
+      <figure>
+        <img src="media/cameraman_dx.png" alt="Cameraman convolved with Dx">
+        <figcaption>D<sub>x</sub> response</figcaption>
+      </figure>
+      <figure>
+        <img src="media/cameraman_dy.png" alt="Cameraman convolved with Dy">
+        <figcaption>D<sub>y</sub> response</figcaption>
+      </figure>
+    </div>
+
+    <h3>Choosing the threshold</h3>
+    <p>
+      We binarize the gradient magnitude at several threshold values to see how the edge map changes.
+      Low thresholds keep faint edges but also pick up noise in flat regions, while high thresholds
+      suppress noise at the cost of losing real edges. I selected the 0.2 threshold
+      as the best balance between the two.
+    </p>
+    <figure class="wide">
+      <img src="media/cameraman_panel.png" alt="Cameraman gradient magnitude and binarized edge maps at various thresholds">
+      <figcaption>Gradient magnitude and binarized edge maps at various thresholds</figcaption>
+    </figure>
+
+    <h2>Part 1.3: Derivative of Gaussian (DoG) Filter</h2>
+    <p>
+      The finite-difference edge map above is noisy because raw image gradients are sensitive to
+      pixel-level noise. We first smooth the cameraman image with a Gaussian filter, then repeat the
+      procedure from Part 1.2. We also construct the DoG filters directly, by convolving the Gaussian
+      with D<sub>x</sub> and D<sub>y</sub>, and confirm that applying the DoG filter in one pass gives the
+      same result as smoothing then differentiating.
+    </p>
+
+    <h3>Gaussian-smoothed gradients</h3>
+    <p>
+      I built a 2D Gaussian kernel by taking the outer product of a 1D <code>cv2.getGaussianKernel</code>
+      with its transpose, blurred the cameraman with it, and then ran the same D<sub>x</sub>, D<sub>y</sub>,
+      magnitude, and threshold steps as before. The main difference is that the edge map is much cleaner.
+      The gradients from raw pixels picked up a lot of speckle from grain in the flat regions, and blurring
+      first smooths that out, so the edges that remain are the stronger, more continuous ones like the
+      outline of the cameraman and the tripod.
+    </p>
+    <div class="grid-4">
+      <figure>
+        <img src="media/cameraman_blur_dx.png" alt="Gaussian-smoothed cameraman convolved with Dx">
+        <figcaption>D<sub>x</sub> response</figcaption>
+      </figure>
+      <figure>
+        <img src="media/cameraman_blur_dy.png" alt="Gaussian-smoothed cameraman convolved with Dy">
+        <figcaption>D<sub>y</sub> response</figcaption>
+      </figure>
+      <figure>
+        <img src="media/cameraman_blur_magnitude.png" alt="Gradient magnitude of smoothed cameraman">
+        <figcaption>Gradient magnitude</figcaption>
+      </figure>
+      <figure>
+        <img src="media/cameraman_blur_edges.png" alt="Binarized gradient magnitude of smoothed cameraman">
+        <figcaption>Binarized edge map</figcaption>
+      </figure>
+    </div>
+
+    <h3>Derivative of Gaussian filters</h3>
+    <p>
+      Convolution is associative, so blurring and then differentiating is the same as convolving once with a
+      precomputed filter. I convolved the Gaussian with D<sub>x</sub> and D<sub>y</sub> to get two DoG
+      filters, shown below. These are the same kernels I would get by smoothing first, so one convolution
+      per direction replaces two.
+    </p>
+    <div class="grid-2">
+      <figure>
+        <img class="pixelated" src="media/cameraman_dog_x.png" alt="DoG filter for Dx">
+        <figcaption>D<sub>x</sub> &lowast; Gaussian kernel</figcaption>
+      </figure>
+      <figure>
+        <img class="pixelated" src="media/cameraman_dog_y.png" alt="DoG filter for Dy">
+        <figcaption>D<sub>y</sub> &lowast; Gaussian kernel</figcaption>
+      </figure>
+    </div>
+
+    <h3>Verification</h3>
+    <p>
+      Running the DoG filters on the raw cameraman gives the same edge map as the
+      smooth-then-differentiate approach, so the two routes agree.
+    </p>
+    <div class="grid-4">
+      <figure>
+        <img src="media/cameraman_dog_dx.png" alt="Cameraman convolved with DoG Dx filter">
+        <figcaption>DoG D<sub>x</sub> response</figcaption>
+      </figure>
+      <figure>
+        <img src="media/cameraman_dog_dy.png" alt="Cameraman convolved with DoG Dy filter">
+        <figcaption>DoG D<sub>y</sub> response</figcaption>
+      </figure>
+      <figure>
+        <img src="media/cameraman_dog_magnitude.png" alt="Gradient magnitude from DoG filters">
+        <figcaption>Gradient magnitude</figcaption>
+      </figure>
+      <figure>
+        <img src="media/cameraman_dog_edges.png" alt="Binarized edge map from DoG filters">
+        <figcaption>Binarized edge map</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section>
+    <div class="part-header"><h1>Part 2: Fun with Frequencies</h1></div>
+
+    <h2>Part 2.1: Image Sharpening</h2>
+    <p>
+      Unsharp masking sharpens an image by subtracting a blurred copy of the
+      image from the original to isolate the high-frequency detail, then addding some multiple of that detail
+      back onto the original. We explore below how we can combine this into a single convolution...
+    </p>
+
+    <h3>Merging two convolutions into one</h3>
+    <p>
+      The high frequencies are the original minus its blurred copy, so
+      <code>high = image &minus; gaussian * image</code>. Adding a multiple of that back gives
+      <code>sharpened = image + alpha * high</code>. Expanding this, the image is convolved with
+      <code>(1 + alpha) * impulse &minus; alpha * gaussian</code>, which is a single filter. Because the
+      impulse is just the identity, the sharpening filter is a single convolution and alpha controls how
+      strongly the high frequencies get boosted.
+    </p>
+
+    <h3>Taj Mahal</h3>
+    <div class="grid-4">
+      <figure>
+        <img src="media/taj.jpg" alt="Original Taj Mahal image">
+        <figcaption>Original</figcaption>
+      </figure>
+      <figure>
+        <img src="media/taj_blurred.png" alt="Blurred Taj Mahal image">
+        <figcaption>Blurred</figcaption>
+      </figure>
+      <figure>
+        <img src="media/taj_high_freq.png" alt="High-frequency detail of the Taj Mahal image">
+        <figcaption>High-frequency detail</figcaption>
+      </figure>
+      <figure>
+        <img src="media/taj_sharpened_1.0.png" alt="Sharpened Taj Mahal image with alpha 1.0">
+        <figcaption>Sharpened (alpha = 1.0)</figcaption>
+      </figure>
+    </div>
+
+    <h3>Varying the sharpening amount</h3>
+    <p>
+      Keeping the same Gaussian, I varied alpha to see how much sharpening is too much. At alpha = 0.5 the
+      change is subtle, at 1.0 the edges of the domes and arches get more defined, and at 2.0 the sharpening starts
+      to look a bit over-processed.
+    </p>
+    <div class="grid-3">
+      <figure>
+        <img src="media/taj_sharpened_0.5.png" alt="Taj Mahal sharpened with alpha 0.5">
+        <figcaption>alpha = 0.5</figcaption>
+      </figure>
+      <figure>
+        <img src="media/taj_sharpened_1.0.png" alt="Taj Mahal sharpened with alpha 1.0">
+        <figcaption>alpha = 1.0</figcaption>
+      </figure>
+      <figure>
+        <img src="media/taj_sharpened_2.0.png" alt="Taj Mahal sharpened with alpha 2.0">
+        <figcaption>alpha = 2.0</figcaption>
+      </figure>
+    </div>
+
+    <h3>Another image: sunset</h3>
+    <p>
+      This is a picture I took at the beach with my friends.
+    </p>
+    <div class="grid-4 wide-row">
+      <figure>
+        <img src="media/sunset.JPG" alt="Original sunset image">
+        <figcaption>Original</figcaption>
+      </figure>
+      <figure>
+        <img src="media/sunset_blurred.png" alt="Blurred sunset image">
+        <figcaption>Blurred</figcaption>
+      </figure>
+      <figure>
+        <img src="media/sunset_high_freq.png" alt="High-frequency detail of the sunset image">
+        <figcaption>High-frequency detail</figcaption>
+      </figure>
+      <figure>
+        <img src="media/sunset_sharpened_1.0.png" alt="Sharpened sunset image with alpha 1.0">
+        <figcaption>Sharpened (alpha = 1.0)</figcaption>
+      </figure>
+    </div>
+    <div class="grid-3 wide-row">
+      <figure>
+        <img src="media/sunset_sharpened_0.5.png" alt="Sunset sharpened with alpha 0.5">
+        <figcaption>alpha = 0.5</figcaption>
+      </figure>
+      <figure>
+        <img src="media/sunset_sharpened_1.0.png" alt="Sunset sharpened with alpha 1.0">
+        <figcaption>alpha = 1.0</figcaption>
+      </figure>
+      <figure>
+        <img src="media/sunset_sharpened_2.0.png" alt="Sunset sharpened with alpha 2.0">
+        <figcaption>alpha = 2.0</figcaption>
+      </figure>
+    </div>
+    <p>
+      The sharpening is less noticeable on this image because the edges aren't as well defined. The
+      high-frequency detail image looks almost pure grey unless you zoom in, since there isn't much sharp
+      contrast for the filter to pick up. The difference shows up more at higher alphas, especially in the
+      ripples in the water
+    </p>
+
+    <h3>Recovering detail after blurring</h3>
+    <p>
+      To check how much sharpening can undo, I took a sharp image of my hometown, Singapore, blurred it
+      mildly, and then sharpened the blurred version. Comparing the sharpened result to the original, most all of the detail comes back,
+      which shows that a mild blur mostly removes high frequencies that the unsharp mask can restore.
+    </p>
+    <div class="grid-3 wide-row">
+      <figure>
+        <img src="media/singapore_original.png" alt="Original Singapore image">
+        <figcaption>Original</figcaption>
+      </figure>
+      <figure>
+        <img src="media/singapore_blurred_only.png" alt="Singapore image after mild blur">
+        <figcaption>Blurred</figcaption>
+      </figure>
+      <figure>
+        <img src="media/singapore_blur_then_sharpen.png" alt="Singapore image blurred then sharpened">
+        <figcaption>Sharpened after blurring</figcaption>
+      </figure>
+    </div>
+
+    <h2>Part 2.2: Hybrid Images</h2>
+    <p>
+      A hybrid image combines the low frequencies of one image with the high frequencies of another, so
+      that it reads as the high-frequency image up close and as the low-frequency image from a distance or
+      when squinted at. We align the two input images by eye on a couple of common features, then low-pass
+      filter one and high-pass filter the other before averaging them together.
+    </p>
+
+    <h3>Alignment</h3>
+    <p>
+      Derek's photo is the high-frequency input and Nutmeg is the low-frequency input. We first align the images, I chose to use the eyes as the reference points.
+    </p>
+    <div class="grid-2">
+      <figure>
+        <img src="media/DerekPicture.jpg" alt="Original Derek photo">
+        <figcaption>Derek (original)</figcaption>
+      </figure>
+      <figure>
+        <img src="media/nutmeg.jpg" alt="Original Nutmeg photo">
+        <figcaption>Nutmeg (original)</figcaption>
+      </figure>
+    </div>
+    <div class="grid-2">
+      <figure>
+        <img src="media/derek_nutmeg_im1_aligned.png" alt="Aligned Derek photo">
+        <figcaption>Derek (aligned)</figcaption>
+      </figure>
+      <figure>
+        <img src="media/derek_nutmeg_im2_aligned.png" alt="Aligned Nutmeg photo">
+        <figcaption>Nutmeg (aligned)</figcaption>
+      </figure>
+    </div>
+    <div class="grid-2">
+      <figure>
+        <img src="media/derek_nutmeg_fft_im1.png" alt="Log-magnitude FFT of aligned Derek">
+        <figcaption>FFT of Derek (aligned)</figcaption>
+      </figure>
+      <figure>
+        <img src="media/derek_nutmeg_fft_im2.png" alt="Log-magnitude FFT of aligned Nutmeg">
+        <figcaption>FFT of Nutmeg (aligned)</figcaption>
+      </figure>
+    </div>
+    <p>
+      Next I filtered each image. I low-passed Nutmeg with a Gaussian, and high-passed Derek by subtracting
+      his Gaussian-blurred version from the original. Both filtered images are shown below, followed by the
+      hybrid itself, which is their sum.
+    </p>
+    <div class="grid-2">
+      <figure>
+        <img src="media/derek_nutmeg_low_passed.png" alt="Low-passed Nutmeg">
+        <figcaption>Low-passed Nutmeg</figcaption>
+      </figure>
+      <figure>
+        <img src="media/derek_nutmeg_high_passed.png" alt="High-passed Derek">
+        <figcaption>High-passed Derek</figcaption>
+      </figure>
+    </div>
+    <div class="grid-2">
+      <figure>
+        <img src="media/derek_nutmeg_fft_hybrid.png" alt="Log-magnitude FFT of the hybrid">
+        <figcaption>Log-magnitude FFT of the hybrid</figcaption>
+      </figure>
+      <figure>
+        <img src="media/derek_nutmeg_hybrid.png" alt="Derek and Nutmeg hybrid image">
+        <figcaption>Final hybrid (Derek + Nutmeg)</figcaption>
+      </figure>
+    </div>
+
+    <h3>Cutoffs</h3>
+    <p>
+      The cutoffs are the Gaussian sigmas that set where each filter splits the spectrum. I used
+      <code>sigma1 = 4</code> for the high-pass on Derek and <code>sigma2 = 6</code> for the low-pass on
+      Nutmeg. A smaller sigma1 keeps more of the fine detail from Derek, and a larger sigma2 removes more
+      of the detail from Nutmeg. I picked these values by trying a few settings and checking whether the
+      hybrid appeared as Nutmeg from a distance and as Derek up close.
+    </p>
+
+    <h3>More examples</h3>
+    <p>
+      I'm a lifelong soccer player, so I wanted a hybrid that is a literal "world" cup.
+    </p>
+    <div class="grid-2">
+      <figure>
+        <img src="media/soccer_ball.png" alt="Soccer ball">
+        <figcaption>Soccer ball (high frequencies)</figcaption>
+      </figure>
+      <figure>
+        <img src="media/earth.png" alt="Earth">
+        <figcaption>Earth (low frequencies)</figcaption>
+      </figure>
+    </div>
+    <figure class="solo">
+      <img src="media/soccer_earth_hybrid.png" alt="Soccer ball and Earth hybrid image">
+      <figcaption>Soccer ball + Earth hybrid</figcaption>
+    </figure>
+
+    <p>
+      The second hybrid is an homage to the Breaking Bad finale: Gus Fring's face high-passed over a skull.
+    </p>
+    <div class="grid-2">
+      <figure>
+        <img src="media/gus_fring.png" alt="Gus Fring">
+        <figcaption>Gus Fring (high frequencies)</figcaption>
+      </figure>
+      <figure>
+        <img src="media/skull.png" alt="Skull">
+        <figcaption>Skull (low frequencies)</figcaption>
+      </figure>
+    </div>
+    <figure class="solo">
+      <img src="media/skull_gus_hybrid.png" alt="Skull and Gus Fring hybrid image">
+      <figcaption>Gus Fring + skull hybrid</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <div class="part-header"><h1>Multiresolution Blending and the Oraple</h1></div>
+
+    <h2>Part 2.3: Gaussian and Laplacian Stacks</h2>
+    <p>
+      A Gaussian stack repeatedly blurs an image with the same low-pass filter without downsampling, so
+      every level has the same resolution but progressively less high-frequency detail. A Laplacian stack
+      is built by subtracting each level of the Gaussian stack from the previous one, isolating the band
+      of frequencies removed at that step. Summing every level of the Laplacian stack (plus the final,
+      most-blurred Gaussian level) reconstructs the original image exactly.
+    </p>
+    <p>
+      I applied the stacks to the classic apple/orange example. Below are the two original images and the
+      oraple they produce, which is the blend from Part 2.4.
+    </p>
+    <div class="grid-3">
+      <figure>
+        <img src="media/apple.jpeg" alt="Original apple">
+        <figcaption>Apple</figcaption>
+      </figure>
+      <figure>
+        <img src="media/orange.jpeg" alt="Original orange">
+        <figcaption>Orange</figcaption>
+      </figure>
+      <figure>
+        <img src="media/oraple.png" alt="Oraple">
+        <figcaption>Oraple</figcaption>
+      </figure>
+    </div>
+
+    <h3>Gaussian stacks</h3>
+    <p>
+      Each level is the previous level blurred again with the same Gaussian, with no downsampling, so every
+      panel is the same size. The apple gets progressively softer, and by level 4 only the broad color
+      regions remain.
+    </p>
+    <figure class="wide">
+      <img src="media/apple_gaussian_stack.png" alt="Gaussian stack of the apple, levels 0 to 4">
+      <figcaption>Apple Gaussian stack</figcaption>
+    </figure>
+    <figure class="wide">
+      <img src="media/orange_gaussian_stack.png" alt="Gaussian stack of the orange">
+      <figcaption>Orange Gaussian stack</figcaption>
+    </figure>
+
+    <h3>Laplacian stacks</h3>
+    <p>
+      Each Laplacian level is the difference between two neighboring Gaussian levels, so it holds only the
+      band of detail removed in that step. Adding all the levels back together recovers the original image.
+    </p>
+    <figure class="wide">
+      <img src="media/apple_laplacian_stack.png" alt="Laplacian stack of the apple">
+      <figcaption>Apple Laplacian stack</figcaption>
+    </figure>
+    <figure class="wide">
+      <img src="media/orange_laplacian_stack.png" alt="Laplacian stack of the orange">
+      <figcaption>Orange Laplacian stack</figcaption>
+    </figure>
+
+    <h2>Part 2.4: Multiresolution Blending</h2>
+    <p>
+      To blend two images along a seam, we build Laplacian stacks for both images and a Gaussian stack for
+      a mask, then at each level combine the two Laplacian levels using the corresponding (blurred) mask
+      level as a per-pixel weight. Collapsing this combined stack back down gives a blend where the
+      transition is sharp at high frequencies (near the seam) and gradual at low frequencies, avoiding the
+      hard edge a naive alpha blend would produce.
+    </p>
+
+    <h3>Vertical seam: apple and orange</h3>
+    <p>
+      The oraple uses a vertical step mask, so the left half comes from the apple and the right half from the
+      orange. The seam is smoothed by the blurred mask at each Laplacian level, so the transition is not a hard
+      line.
+    </p>
+    <figure class="solo">
+      <img src="media/oraple.png" alt="Oraple blend of apple and orange">
+      <figcaption>Oraple (apple left, orange right)</figcaption>
+    </figure>
+
+    <h3>Vertical seam: tennis ball and baseball</h3>
+    <p>
+      For a second vertical seam, I blended a tennis ball and a baseball. Even with an increased sigma I found it difficult to make a smooth blend due to the stark difference in texture of the two images.
+    </p>
+    <figure class="wide">
+      <img src="media/tennis_baseball_summary.png" alt="Tennis ball, baseball, mask, and blended result">
+      <figcaption>Image A (tennis ball), Image B (baseball), mask, and blended result</figcaption>
+    </figure>
+
+    <h3>Irregular mask: cat and lion</h3>
+    <p>
+      For an irregular mask I used an oval rather than a straight line, so the cat's face is blended into the
+      lion's head inside the oval. The blurred mask keeps the boundary of the oval from showing as a hard edge.
+    </p>
+    <figure class="wide">
+      <img src="media/cat_lion_summary.png" alt="Cat, lion, oval mask, and blended result">
+      <figcaption>Image A (cat), Image B (lion), oval mask, and blended result</figcaption>
+    </figure>
+    <figure class="wide">
+      <img src="media/cat_lion_stacks.png" alt="Masked Laplacian stacks for cat and lion and the combined stack">
+      <figcaption>Masked Laplacian stacks for the cat and lion blend</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2>Reflection</h2>
+    <p>
+      My number one takeaway from this project was how important frequencies are for perception, and how we can manipulate them to affect how humans view an image. It also helped me understand convolution from the ground up, from implementing and vectorizing filters to using them for blurring and edge detection. I found it especially cool how convolution can separate spatial frequencies, and how combining low- and high-frequency information creates hybrid images whose perception changes with viewing distance.
+    </p>
+  </section>
+</div>
+
+<div class="page__footer">
+  <div class="page__footer-copyright">&copy; 2026 Aarav Desai</div>
+</div>
+
+</body>
+</html>
