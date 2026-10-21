@@ -1,0 +1,610 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project 3: Flow Matching</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,700;1,6..72,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;1,8..60,300;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --global-base-color: #2f7f93;
+    --global-bg-color: #fff;
+    --global-border-color: #f2f3f3;
+    --global-text-color: #494e52;
+    --global-text-color-light: #bdc1c4;
+    --global-link-color: #0ea1c5;
+    --global-code-background-color: #fafafa;
+  }
+
+  *{box-sizing:border-box;}
+
+  html{background-color:var(--global-bg-color);font-size:16px;}
+
+  body{
+    margin:0;
+    background:var(--global-bg-color);
+    color:var(--global-text-color);
+    font-family:'Source Serif 4', Georgia, serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  a{color:var(--global-link-color); text-decoration:none;}
+  a:hover{text-decoration:underline;}
+
+  h1, h2, h3{
+    font-family:'Newsreader', Georgia, serif;
+    color:var(--global-text-color);
+    font-weight:600;
+  }
+
+  /* ---------- MASTHEAD ---------- */
+  .masthead{
+    width:100%;
+    background:var(--global-bg-color);
+    border-bottom:1px solid var(--global-border-color);
+  }
+  .masthead__inner-wrap{
+    max-width:800px;
+    margin:0 auto;
+    padding:0.75em 1.5em;
+    font-family:'Source Serif 4', Georgia, serif;
+  }
+  .masthead nav a{
+    color:var(--global-text-color);
+    font-size:1em;
+  }
+  .masthead nav a:hover{
+    color:var(--global-base-color);
+    text-decoration:none;
+  }
+
+  /* ---------- MAIN ---------- */
+  .page__inner-wrap{
+    max-width:800px;
+    margin:0 auto;
+    padding:3rem 1.5em 4rem;
+  }
+
+  h1.page__title{
+    margin:0 0 0.25em;
+    line-height:1.15;
+    font-size:2em;
+  }
+  p.date{
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    font-size:0.8em;
+    color:var(--global-base-color);
+    margin:0 0 2rem;
+  }
+
+  .intro{
+    font-size:1.175em;
+    margin-bottom:2.5rem;
+  }
+
+  .part-header{
+    margin:0 0 2rem;
+  }
+  .part-header h1{
+    font-size:1.7em;
+    margin:0;
+  }
+
+  section{
+    margin-bottom:3rem;
+    padding-bottom:2.5rem;
+    border-bottom:1px solid var(--global-border-color);
+  }
+  section:last-of-type{
+    border-bottom:none;
+  }
+
+  h2{
+    font-size:1.4em;
+    margin:0 0 1em;
+  }
+  h3{
+    font-size:1.1em;
+    margin:1.5em 0 0.75em;
+  }
+
+  section p{
+    font-size:1.125em;
+    margin:1em 0;
+  }
+
+  section ul, section ol{
+    font-size:1em;
+    margin:1em 0;
+    padding-left:1.4em;
+  }
+  section li{
+    margin:0.35em 0;
+  }
+
+  code{
+    font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    background:var(--global-code-background-color);
+    padding:0.15em 0.4em;
+    border-radius:3px;
+    font-size:0.9em;
+  }
+
+  pre{
+    background:var(--global-code-background-color);
+    border:1px solid var(--global-border-color);
+    border-radius:4px;
+    padding:1em 1.2em;
+    overflow-x:auto;
+    margin:1em 0;
+  }
+  pre code{
+    background:none;
+    padding:0;
+    font-size:0.85em;
+  }
+
+  .pair{
+    display:flex;
+    gap:1.5em;
+    flex-wrap:wrap;
+    margin-bottom:1em;
+  }
+  .pair figure{
+    flex:1 1 260px;
+    margin:0;
+  }
+  .grid-3{
+    display:flex;
+    gap:1.5em;
+    flex-wrap:wrap;
+    margin-bottom:1em;
+  }
+  .grid-3 figure{
+    flex:1 1 200px;
+    margin:0;
+  }
+  .grid-2{
+    display:flex;
+    gap:1.5em;
+    flex-wrap:wrap;
+    margin-bottom:1em;
+  }
+  .grid-2 figure{
+    flex:1 1 320px;
+    margin:0;
+  }
+  .grid-4{
+    display:flex;
+    gap:1.5em;
+    flex-wrap:wrap;
+    margin-bottom:1em;
+  }
+  .grid-4 figure{
+    flex:1 1 150px;
+    margin:0;
+  }
+  figure.solo{
+    margin:0 0 1em;
+  }
+  .wide-row{
+    width:100vw;
+    max-width:1100px;
+    margin-left:calc(50% - 50vw);
+    margin-right:calc(50% - 50vw);
+    padding:0 1.5em;
+    box-sizing:border-box;
+  }
+  @media (min-width:1100px){
+    .wide-row{
+      margin-left:calc(50% - 550px);
+      margin-right:calc(50% - 550px);
+    }
+  }
+  img.pixelated{
+    image-rendering:pixelated;
+  }
+  figure.wide{
+    width:100vw;
+    max-width:1100px;
+    margin:0 auto 1em;
+    margin-left:calc(50% - 50vw);
+    margin-right:calc(50% - 50vw);
+  }
+  @media (min-width:1100px){
+    figure.wide{
+      margin-left:calc(50% - 550px);
+      margin-right:calc(50% - 550px);
+    }
+  }
+
+  .hybrid{
+    display:flex;
+    gap:1.5em;
+    align-items:center;
+    margin-bottom:1.5em;
+  }
+  .hybrid .hybrid-full{flex:1 1 0; margin:0;}
+  .hybrid .hybrid-small{flex:0 0 120px; margin:0;}
+  @media (max-width:500px){
+    .hybrid{flex-direction:column;}
+    .hybrid .hybrid-small{flex-basis:auto; width:120px;}
+  }
+  figure img{
+    width:100%;
+    display:block;
+    border-radius:4px;
+    border:1px solid var(--global-border-color);
+  }
+
+  .placeholder{
+    width:100%;
+    aspect-ratio:3/4;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--global-code-background-color);
+    border:1px dashed var(--global-text-color-light);
+    border-radius:4px;
+    color:var(--global-text-color-light);
+    font-size:0.85em;
+    text-align:center;
+    padding:1em;
+  }
+
+  figcaption{
+    font-size:0.9em;
+    color:var(--global-text-color);
+    opacity:0.85;
+    margin-top:0.5em;
+    text-align:center;
+  }
+
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:0.92em;
+    margin:1em 0 1.5em;
+  }
+  th, td{
+    text-align:left;
+    padding:0.5em 0.75em;
+    border-bottom:1px solid var(--global-border-color);
+  }
+  th{
+    font-family:'Newsreader', Georgia, serif;
+    font-weight:600;
+    color:var(--global-text-color);
+  }
+
+  .note{
+    background:var(--global-code-background-color);
+    border-left:3px solid var(--global-base-color);
+    padding:0.75em 1em;
+    font-size:0.95em;
+    margin:1.5em 0;
+  }
+
+  .bw{
+    border-left:3px solid #c9972f;
+    background:#fdf8ef;
+    padding:0.75em 1em;
+    margin:1.5em 0;
+  }
+  .bw p:first-child{
+    margin-top:0;
+  }
+  .bw-label{
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    font-size:0.75em;
+    color:#c9972f;
+    font-weight:600;
+    display:block;
+    margin-bottom:0.5em;
+  }
+
+  /* ---------- FOOTER ---------- */
+  .page__footer{
+    border-top:1px solid var(--global-border-color);
+  }
+  .page__footer-copyright{
+    max-width:800px;
+    margin:0 auto;
+    padding:1.5em;
+    font-size:0.85em;
+    color:var(--global-text-color-light);
+  }
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <nav><a href="../../index.html">&larr; Back to portfolio</a></nav>
+  </div>
+</div>
+
+<div class="page__inner-wrap">
+  <h1 class="page__title">Project 3: Flow Matching</h1>
+  <p class="date">CS 180, Fall 2026</p>
+
+  <p class="intro">
+    In this project, we explore how to sample from and train flow matching models!
+  </p>
+
+  <section>
+    <div class="part-header"><h1>Part A: Exploring the Power of Flow Models</h1></div>
+    <h2>1. Visualizing Training and Sampling</h2>
+    <h3>1.1 Constructing Noisy Training Inputs</h3>
+    <p>For this subpart, I will be using a photo of my dog Leo asleep on the couch.</p>
+    <figure class="wide">
+      <img src="media/part1-1.png" alt="Original image and noisy versions at t=0.25, 0.5, 0.75">
+      <figcaption>Original image and noisy versions at t = 0.25, 0.5, 0.75</figcaption>
+    </figure>
+    <h3>1.2 Classical Denoising</h3>
+    <p>Here we explore using Gaussian blurring as a means of denoising an image. As expected, we find that blurring the image smooths it out while losing some of the details. It's not bad, but we can do much better!</p>
+    <figure class="wide">
+      <img src="media/part1-2-blur_0.25.png" alt="Noisy input and Gaussian-denoised result at t=0.25">
+      <figcaption>Noisy input vs. Gaussian-blur denoising, t = 0.25</figcaption>
+    </figure>
+    <figure class="wide">
+      <img src="media/part1-2-blur_0.5.png" alt="Noisy input and Gaussian-denoised result at t=0.5">
+      <figcaption>Noisy input vs. Gaussian-blur denoising, t = 0.5</figcaption>
+    </figure>
+    <figure class="wide">
+      <img src="media/part1-2-blur_0.75.png" alt="Noisy input and Gaussian-denoised result at t=0.75">
+      <figcaption>Noisy input vs. Gaussian-blur denoising, t = 0.75</figcaption>
+    </figure>
+    <h3>1.3 One-Step Denoising</h3>
+    <p>We now use a pretrained model to denoise our image in one step, starting from various noise levels.</p>
+    <figure class="wide">
+      <img src="media/part1-3-one_step_0.25.png" alt="Original, noisy, and one-step estimate at t=0.25">
+      <figcaption>Original, noisy input, and one-step estimate, t = 0.25</figcaption>
+    </figure>
+    <figure class="wide">
+      <img src="media/part1-3-one_step_0.5.png" alt="Original, noisy, and one-step estimate at t=0.5">
+      <figcaption>Original, noisy input, and one-step estimate, t = 0.5</figcaption>
+    </figure>
+    <figure class="wide">
+      <img src="media/part1-3-one_step_0.75.png" alt="Original, noisy, and one-step estimate at t=0.75">
+      <figcaption>Original, noisy input, and one-step estimate, t = 0.75</figcaption>
+    </figure>
+    <h3>1.4 Visualizing Velocity</h3>
+    <p>Here, we visualize the errors in our model's predictions across various sigma levels. We find that our models' errors are greater in magntitude at higher noise levels, which intuitively makes sense.</p>
+    <figure class="solo">
+      <img src="media/part1-4-velocity_original.png" alt="Original image">
+      <figcaption>Original image</figcaption>
+    </figure>
+    <figure class="wide">
+      <img src="media/part1-4-velocity_0.25.png" alt="Noisy image, predicted and ground-truth update, and error at t=0.25">
+      
+    </figure>
+    <figure class="wide">
+      <img src="media/part1-4-velocity_0.50.png" alt="Noisy image, predicted and ground-truth update, and error at t=0.50">
+      
+    </figure>
+    <figure class="wide">
+      <img src="media/part1-4-velocity_0.75.png" alt="Noisy image, predicted and ground-truth update, and error at t=0.75">
+      
+    </figure>
+    <h3>1.5 Iterative Denoising with Euler Sampling</h3>
+    <p>Now, instead of using a one-shot denoised prediction from our model, we implement Euler sampling to iteratively denoise an image bit by bit. With Euler sampling, we make several denoiser calls for a single image, and take small steps in the right direction each time.</p>
+    <figure class="wide">
+      <img src="media/part1-5-trajectory.png" alt="Euler sampling trajectory from t=0.5">
+      <figcaption>Euler sampling trajectory starting at t = 0.5</figcaption>
+    </figure>
+    <figure class="wide">
+      <img src="media/part1-5-comparison.png" alt="Comparison of original, Gaussian blur, one-step, and Euler denoising">
+      <figcaption>Original vs. Gaussian blur vs. one-step vs. Euler sampling</figcaption>
+    </figure>
+    <p>We naturally find that Euler sampling produces the most accurate denoised image, followed by a one-step denoiser and lastly Gaussian blurring.</p>
+
+    <h3>1.6 Generating Images from Noise</h3>
+    <p>Here, we prompt our model to generate a "a high quality photo". It's quite interesting that despite changing the seed, our model consistently produces human-looking images, which suggests that most images in its training set captioned as "high quality" contained humans. It was also interesting how the model was unable to produce the humans correctly, like it had a fuzzy understanding of what a high quality image should look like, but couldn't quite fill in the details. </p>
+    <figure class="wide">
+      <img src="media/part1-6-conditional_samples.png" alt="Five samples generated from pure noise">
+      <figcaption>Five samples from pure noise with the prompt “a high quality photo”</figcaption>
+    </figure>
+    <h2>2. Conditional Generation and Guidance</h2>
+    <h3>2.1 Classifier-Free Guidance (CFG)</h3>
+    <p>We now use the same prompt and seeds as above, but use classifier-free guidance to increase adherence to the prompt. Now, we find that the model is able to fill in the human details correctly and the photos look much more realistic than in the previous section. My explanation for this would be that CFG pushes the model to commit to a specific mode in its output distribution, whereas sampling without guidance produces more of an "average" image without heavily committing to any direction. On the other hand, we do find we have sacrificed some level of diversity as our sampled images are now much more similar in nature.</p>
+    <figure class="wide">
+      <img src="media/part2-1-cfg_samples.png" alt="Five CFG samples with w=7">
+      <figcaption>Five samples with CFG (w = 7), same seeds as 1.6</figcaption>
+    </figure>
+    <h2>3. Creative Applications</h2>
+    <h3>3.1 Image-to-Image Editing</h3>
+    <p>In this section we use the same prompt of "a high quality photo" but start from noised versions of three base images: the Campanile, my dog Leo, and an image of Cristiano Ronaldo hitting the classic "siuuu" celebration.</p>
+    <figure class="wide">
+      <img src="media/part3-1-edit_campanile.png" alt="Campanile edited from increasing noise levels">
+      <figcaption>The Campanile</figcaption>
+      
+    </figure>
+    <figure class="wide">
+      <img src="media/part3-1-edit_leo.png" alt="Custom image 1 edited from increasing noise levels">
+      <figcaption>Leo Sleeping</figcaption>
+      
+    </figure>
+    <figure class="wide">
+      <img src="media/part3-1-edit_ronaldo.png" alt="Custom image 2 edited from increasing noise levels">
+      <figcaption>Ronaldo Siu</figcaption>
+
+    <h4>Web + Hand-Drawn Images</h4>
+    </figure>
+    <figure class="wide">
+      <img src="media/part3-1-edit_web_image.png" alt="Web image edited from increasing noise levels">
+      <figcaption>Web art of a minion</figcaption>
+      
+    </figure>
+    <figure class="wide">
+      <img src="media/part3-1-edit_drawing_1.png" alt="Hand-drawn image 1 edited from increasing noise levels">
+      <figcaption>My drawing of a soccer ball</figcaption>
+      
+    </figure>
+    <figure class="wide">
+      <img src="media/part3-1-edit_drawing_2.png" alt="Hand-drawn image 2 edited from increasing noise levels">
+      <figcaption>My drawing of a sunset</figcaption>
+      
+    </figure>
+    <h3>3.2 Text-Guided Image Editing</h3>
+    <p>We now change the prompt to see if we can try edit our images. I particularly liked how sunglasses Ronaldo edit turned out.</p>
+    <figure class="wide">
+      <img src="media/part3-2-text_edit_campanile.png" alt="Campanile edited with the prompt "a giant cactus"">
+      
+    </figure>
+    <figure class="wide">
+      <img src="media/part3-2-text_edit_my_image_1.png" alt="Custom image edited with the prompt "a sleeping dog in a grassy field"">
+      
+    </figure>
+    <figure class="wide">
+      <img src="media/part3-2-text_edit_my_image_2.png" alt="Custom image edited with the prompt "a man with sunglasses"">
+      
+    </figure>
+    <h3>3.3 Visual Anagrams</h3>
+    <p>We now produce visual anagrams by denoising an upright image in one prompt direction, denoising its flipped image in another direction, and taking the average velocity to produce an anagram image! I really like how these turned out.</p>
+    <div class="grid-2">
+      <figure>
+        <img src="media/part3-3-anagram_views_0.png" alt="Visual anagram: fiery phoenix and erupting volcano">
+        <figcaption>Phoenix + Volcano</figcaption>
+      </figure>
+      <figure>
+        <img src="media/part3-3-anagram_views_1.png" alt="Visual anagram: waterfall and woman with long hair">
+        <figcaption>Waterfall + Woman</figcaption>
+      </figure>
+    </div>
+    <h3>3.4 Hybrid Images</h3>
+    <p>Similar to the previous project we create hybrid images, this time by combining high-pass and low-pass filters with denoising. The first image is of a mountain range and an old man's face, and the second is of an ocean wave and a dragon's head.</p>
+    <div class="hybrid">
+      <figure class="hybrid-full">
+        <img src="media/part3-4-hybrid_0.png" alt="Hybrid image 1">
+        <figcaption>Mountain Range + Old Man's Face. Mountain range more visible here.</figcaption>
+      </figure>
+      <figure class="hybrid-small">
+        <img src="media/part3-4-hybrid_0.png" alt="Hybrid image 1, shrunk">
+        <figcaption>Mountain Range + Old Man's Face. Old man's face more visible here.</figcaption>
+      </figure>
+    </div>
+    <div class="hybrid">
+      <figure class="hybrid-full">
+        <img src="media/part3-4-hybrid_1.png" alt="Hybrid image 2">
+        <figcaption>Crashing wave + Dragon Head. Wave is more visible here.</figcaption>
+      </figure>
+      <figure class="hybrid-small">
+        <img src="media/part3-4-hybrid_1.png" alt="Hybrid image 2, shrunk">
+        <figcaption>Crashing wave + Dragon Head. Dragon's head is more visible here.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section>
+    <div class="part-header"><h1>Part B: Flow Matching from Scratch!</h1></div>
+    <p>In this section we train our own flow matching model on the MNIST handwritten digit dataset!</p>
+    <h2>Part 1: Training a Single-Step Denoising UNet</h2>
+    <h3>1.2 Using the UNet to Train a Denoiser</h3>
+    <p>Let's first take a look at our training data at various noise levels.</p>
+    <figure class="wide">
+      <img src="media/partb/part1-2.png" alt="Noising process across sigma values">
+      <figcaption>Noising process for σ = 0.0, 0.2, 0.4, 0.5, 0.6, 0.8, 1.0</figcaption>
+    </figure>
+    <h3>1.2.1 Training</h3>
+    <p>Our first task is to train a model to denoise images with a fixed σ of 0.5. We use the UNet architecture with a hidden dimensions of 128, and visualize our training loss below.</p>
+    <figure class="solo">
+      <img src="media/partb/part-1-2-1-training_loss.png" alt="Denoiser training loss curve">
+      <figcaption>Training loss curve</figcaption>
+    </figure>
+    <p>We trained our model for five epochs, and now compare our Epoch 1 checkpoint with our Epoch 5 checkpoint. There's little difference, and this is corroborated by our loss curve, our model's learning is mostly complete by the end of the first epoch.</p>
+    <figure class="wide">
+      <img src="media/partb/part1-2-1-denoising_comparison.png" alt="Original, noisy, and denoised results at epochs 1 and 5">
+      <figcaption>Original / noisy (σ = 0.5) / denoised after epoch 1 / denoised after epoch 5</figcaption>
+    </figure>
+    <h3>1.2.2 Out-of-Distribution Testing</h3>
+    <p>We now visualize our model's performance on inputs at varying sigma levels. Even though our model was only trained on images noised to σ=0.5, it performs pretty well on all inputs below σ = 0.6, after which it starts to struggle. </p>
+    <figure class="wide">
+      <img src="media/partb/part1-2-2-ood_denoising.png" alt="Denoising results across noise levels">
+      <figcaption>Denoising results for σ = 0.0, 0.2, 0.4, 0.5, 0.6, 0.8, 1.0</figcaption>
+    </figure>
+    <h3>1.2.3 Denoising Pure Noise</h3>
+    <p>Our next experiment is to train our model to generate images starting from pure noise. We find that under this current formulation, our model's diversity collapses and it's unable to generate real digits. Rather, it defaults to predicting an image that looks like the average of all the numbers. This makes sense under it's current objective, because MSE loss would be minimized when predicting the average of all possible images from random noise.</p>
+    <figure class="solo">
+      <img src="media/partb/part1-2-3-pure_noise_training_loss.png" alt="Pure noise denoiser training loss">
+      <figcaption>Training loss curve</figcaption>
+    </figure>
+    <figure class="solo">
+      <img src="media/partb/part1-2-3-pure_noise_predictions.png" alt="Pure noise inputs and denoised outputs at epochs 1 and 5">
+      <figcaption>Pure noise / denoised epoch 1 / denoised epoch 5</figcaption>
+    </figure>
+    <h2>Part 2: Training a Flow Matching Model</h2>
+    <h3>2.2 Training the Time-Conditioned UNet</h3>
+    <p>We attempt to fix the issue from the previous part by conditioning our model on a given timestep/sigma level.</p>
+    <figure class="solo">
+      <img src="media/partb/part2-2-loss.png" alt="Time-conditioned UNet training loss">
+      <figcaption>Training loss curve</figcaption>
+    </figure>
+    <h3>2.3 Sampling from the Time-Conditioned UNet</h3>
+    <p>We find that our time-conditioned UNet is able to generate more realistic outputs than the unconditioned pure-noise network, but there's still room for improvement.</p>
+    <figure class="wide">
+      <img src="media/partb/part2-3-ep1.png" alt="Time-conditioned samples after epoch 1">
+      <figcaption>Epoch 1</figcaption>
+    </figure>
+    <figure class="wide">
+      <img src="media/partb/part2-3-ep5.png" alt="Time-conditioned samples after epoch 5">
+      <figcaption>Epoch 5</figcaption>
+    </figure>
+    <figure class="wide">
+      <img src="media/partb/part2-3-ep10.png" alt="Time-conditioned samples after epoch 10">
+      <figcaption>Epoch 10</figcaption>
+    </figure>
+    <h3>2.5 Training the Class-Conditioned UNet</h3>
+    <p>We now train a UNet that is conditioned both on the noise level and on a target digit.</p>
+    <figure class="solo">
+      <img src="media/partb/part2-5-loss.png" alt="Class-conditioned UNet training loss">
+      <figcaption>Training loss curve</figcaption>
+    </figure>
+    <h3>2.6 Sampling from the Class-Conditioned UNet</h3>
+    <p>We see that this class-conditioned UNet converges quite quickly as seen in the loss curve above. We also compare using an exponential learning rate scheduler with a constant learning rate. Since the exponential LR scheduler starts at 1e-2 and then decays, I chose the fixed learning rate model to use a smaller LR of 1e-3 to compensate for the fact that we're not decaying. Comparing the epoch 1 outputs of both models we find the fixed LR model actually converges faster, although they end up converging to a similar performance level in the end.</p>
+    <figure class="wide">
+      <img src="media/partb/part2-6-scheduler-ep1.png" alt="Class-conditioned samples at epoch 1">
+      <figcaption>Epoch 1</figcaption>
+    </figure>
+    <figure class="wide">
+      <img src="media/partb/part2-6-scheduler-ep5.png" alt="Class-conditioned samples at epoch 5">
+      <figcaption>Epoch 5</figcaption>
+    </figure>
+    <figure class="wide">
+      <img src="media/partb/part2-6-scheduler-ep10.png" alt="Class-conditioned samples at epoch 10">
+      <figcaption>Epoch 10</figcaption>
+    </figure>
+    <h3>Without the Learning Rate Scheduler</h3>
+    <figure class="wide">
+      <img src="media/partb/part2-6-no-scheduler-ep1.png" alt="Samples without scheduler at epoch 1">
+      <figcaption>Epoch 1 (no scheduler)</figcaption>
+    </figure>
+    <figure class="wide">
+      <img src="media/partb/part2-6-no-scheduler-ep5.png" alt="Samples without scheduler at epoch 5">
+      <figcaption>Epoch 5 (no scheduler)</figcaption>
+    </figure>
+    <figure class="wide">
+      <img src="media/partb/part2-6-no-scheduler-ep10.png" alt="Samples without scheduler at epoch 10">
+      <figcaption>Epoch 10 (no scheduler)</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2>Takeaways</h2>
+    <p>My biggest takeaway from this project was developing an intuition for flow matching, where we break down the one-shot image generation problem into a series of more tractable subproblems, gradually denoising an image at each step.
+
+I particularly enjoyed the visual anagrams formulation because the math behind it is so intuitive. We essentially split the task into two separate denoising problems and take the average predicted direction. It's amazing how, even though the diffusion model wasn't explicitly trained for such a task, we can leverage our understanding of what it's predicting to generate entirely new kinds of images.</p>
+  </section>
+</div>
+
+<div class="page__footer">
+  <div class="page__footer-copyright">&copy; 2026 Aarav Desai</div>
+</div>
+
+</body>
+</html>
