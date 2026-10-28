@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project 4: Image Warping and Mosaicing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,700;1,6..72,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;1,8..60,300;1,8..60,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<style>
+  :root{
+    --global-base-color: #2f7f93;
+    --global-bg-color: #fff;
+    --global-border-color: #f2f3f3;
+    --global-text-color: #494e52;
+    --global-text-color-light: #bdc1c4;
+    --global-link-color: #0ea1c5;
+    --global-code-background-color: #fafafa;
+  }
+
+  *{box-sizing:border-box;}
+
+  html{background-color:var(--global-bg-color);font-size:16px;}
+
+  body{
+    margin:0;
+    background:var(--global-bg-color);
+    color:var(--global-text-color);
+    font-family:'Source Serif 4', Georgia, serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  a{color:var(--global-link-color); text-decoration:none;}
+  a:hover{text-decoration:underline;}
+
+  h1, h2, h3{
+    font-family:'Newsreader', Georgia, serif;
+    color:var(--global-text-color);
+    font-weight:600;
+  }
+
+  /* ---------- MASTHEAD ---------- */
+  .masthead{
+    width:100%;
+    background:var(--global-bg-color);
+    border-bottom:1px solid var(--global-border-color);
+  }
+  .masthead__inner-wrap{
+    max-width:800px;
+    margin:0 auto;
+    padding:0.75em 1.5em;
+    font-family:'Source Serif 4', Georgia, serif;
+  }
+  .masthead nav a{
+    color:var(--global-text-color);
+    font-size:1em;
+  }
+  .masthead nav a:hover{
+    color:var(--global-base-color);
+    text-decoration:none;
+  }
+
+  /* ---------- MAIN ---------- */
+  .page__inner-wrap{
+    max-width:800px;
+    margin:0 auto;
+    padding:3rem 1.5em 4rem;
+  }
+
+  h1.page__title{
+    margin:0 0 0.25em;
+    line-height:1.15;
+    font-size:2em;
+  }
+  p.date{
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    font-size:0.8em;
+    color:var(--global-base-color);
+    margin:0 0 2rem;
+  }
+
+  .intro{
+    font-size:1.175em;
+    margin-bottom:2.5rem;
+  }
+
+  .part-header{
+    margin:0 0 2rem;
+  }
+  .part-header h1{
+    font-size:1.7em;
+    margin:0;
+  }
+
+  section{
+    margin-bottom:3rem;
+    padding-bottom:2.5rem;
+    border-bottom:1px solid var(--global-border-color);
+  }
+  section:last-of-type{
+    border-bottom:none;
+  }
+
+  h2{
+    font-size:1.4em;
+    margin:0 0 1em;
+  }
+  h3{
+    font-size:1.1em;
+    margin:1.5em 0 0.75em;
+  }
+
+  section p{
+    font-size:1.125em;
+    margin:1em 0;
+  }
+
+  section ul, section ol{
+    font-size:1em;
+    margin:1em 0;
+    padding-left:1.4em;
+  }
+  section li{
+    margin:0.35em 0;
+  }
+
+  code{
+    font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    background:var(--global-code-background-color);
+    padding:0.15em 0.4em;
+    border-radius:3px;
+    font-size:0.9em;
+  }
+
+  pre{
+    background:var(--global-code-background-color);
+    border:1px solid var(--global-border-color);
+    border-radius:4px;
+    padding:1em 1.2em;
+    overflow-x:auto;
+    margin:1em 0;
+  }
+  pre code{
+    background:none;
+    padding:0;
+    font-size:0.85em;
+  }
+
+  .pair{
+    display:flex;
+    gap:1.5em;
+    flex-wrap:wrap;
+    margin-bottom:1em;
+  }
+  .pair figure{
+    flex:1 1 260px;
+    margin:0;
+  }
+  .grid-3{
+    display:flex;
+    gap:1.5em;
+    flex-wrap:wrap;
+    margin-bottom:1em;
+  }
+  .grid-3 figure{
+    flex:1 1 200px;
+    margin:0;
+  }
+  .grid-2{
+    display:flex;
+    gap:1.5em;
+    flex-wrap:wrap;
+    margin-bottom:1em;
+  }
+  .grid-2 figure{
+    flex:1 1 320px;
+    margin:0;
+  }
+  .grid-4{
+    display:flex;
+    gap:1.5em;
+    flex-wrap:wrap;
+    margin-bottom:1em;
+  }
+  .grid-4 figure{
+    flex:1 1 150px;
+    margin:0;
+  }
+  figure.solo{
+    margin:0 0 1em;
+  }
+  .wide-row{
+    width:100vw;
+    max-width:1100px;
+    margin-left:calc(50% - 50vw);
+    margin-right:calc(50% - 50vw);
+    padding:0 1.5em;
+    box-sizing:border-box;
+  }
+  @media (min-width:1100px){
+    .wide-row{
+      margin-left:calc(50% - 550px);
+      margin-right:calc(50% - 550px);
+    }
+  }
+  img.pixelated{
+    image-rendering:pixelated;
+  }
+  figure.wide{
+    width:100vw;
+    max-width:1100px;
+    margin:0 auto 1em;
+    margin-left:calc(50% - 50vw);
+    margin-right:calc(50% - 50vw);
+  }
+  @media (min-width:1100px){
+    figure.wide{
+      margin-left:calc(50% - 550px);
+      margin-right:calc(50% - 550px);
+    }
+  }
+
+  .hybrid{
+    display:flex;
+    gap:1.5em;
+    align-items:center;
+    margin-bottom:1.5em;
+  }
+  .hybrid .hybrid-full{flex:1 1 0; margin:0;}
+  .hybrid .hybrid-small{flex:0 0 120px; margin:0;}
+  @media (max-width:500px){
+    .hybrid{flex-direction:column;}
+    .hybrid .hybrid-small{flex-basis:auto; width:120px;}
+  }
+  figure img{
+    width:100%;
+    display:block;
+    border-radius:4px;
+    border:1px solid var(--global-border-color);
+  }
+
+  .placeholder{
+    width:100%;
+    aspect-ratio:3/4;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--global-code-background-color);
+    border:1px dashed var(--global-text-color-light);
+    border-radius:4px;
+    color:var(--global-text-color-light);
+    font-size:0.85em;
+    text-align:center;
+    padding:1em;
+  }
+
+  figcaption{
+    font-size:0.9em;
+    color:var(--global-text-color);
+    opacity:0.85;
+    margin-top:0.5em;
+    text-align:center;
+  }
+
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:0.92em;
+    margin:1em 0 1.5em;
+  }
+  th, td{
+    text-align:left;
+    padding:0.5em 0.75em;
+    border-bottom:1px solid var(--global-border-color);
+  }
+  th{
+    font-family:'Newsreader', Georgia, serif;
+    font-weight:600;
+    color:var(--global-text-color);
+  }
+
+  .note{
+    background:var(--global-code-background-color);
+    border-left:3px solid var(--global-base-color);
+    padding:0.75em 1em;
+    font-size:0.95em;
+    margin:1.5em 0;
+  }
+
+  .bw{
+    border-left:3px solid #c9972f;
+    background:#fdf8ef;
+    padding:0.75em 1em;
+    margin:1.5em 0;
+  }
+  .bw p:first-child{
+    margin-top:0;
+  }
+  .bw-label{
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    font-size:0.75em;
+    color:#c9972f;
+    font-weight:600;
+    display:block;
+    margin-bottom:0.5em;
+  }
+
+  /* ---------- FOOTER ---------- */
+  .page__footer{
+    border-top:1px solid var(--global-border-color);
+  }
+  .page__footer-copyright{
+    max-width:800px;
+    margin:0 auto;
+    padding:1.5em;
+    font-size:0.85em;
+    color:var(--global-text-color-light);
+  }
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <nav><a href="../../index.html">&larr; Back to portfolio</a></nav>
+  </div>
+</div>
+
+<div class="page__inner-wrap">
+  <h1 class="page__title">Project 4: Image Warping and Mosaicing</h1>
+  <p class="date">CS 180, Fall 2026</p>
+  <section>
+    <div class="part-header"><h1>Part A: Image Warping and Mosaicing</h1></div>
+
+    <h2>A.1 Shooting the Pictures</h2>
+    <p>Two sets of photos shot in my neighbourhood, keeping the cameraman (myself) in place but rotating the phone between pictures.</p>
+    <h3>Set 1</h3>
+    <div class="grid-2">
+      <figure>
+        <img src="media/a1_set1-1.jpeg" alt="Set 1, image 1">
+        <figcaption>Wooden House Exterior</figcaption>
+      </figure>
+      <figure>
+        <img src="media/a1_set1-2.jpeg" alt="Set 1, image 2">
+        <figcaption>Wooden House Exterior (Reference)</figcaption>
+      </figure>
+    </div>
+    <h3>Set 2</h3>
+    <div class="grid-2">
+      <figure>
+        <img src="media/a1_set2-1.jpeg" alt="Set 2, image 1">
+        <figcaption>Winding Staircase</figcaption>
+      </figure>
+      <figure>
+        <img src="media/a1_set2-2.jpeg" alt="Set 2, image 2">
+        <figcaption>Winding Staircase (Reference)</figcaption>
+      </figure>
+    </div>
+
+    
+    <h2>A.2 Recovering Homographies</h2>
+
+    <p>
+      To align two images, we need to find a transformation that maps points
+      in the first image to their corresponding locations in the second.
+      We represent this transformation using a 3x3 homography matrix H:
+    </p>
+
+    <p>
+      $$
+      p' \sim Hp, \qquad
+      H = \begin{bmatrix}
+      h_1 & h_2 & h_3 \\
+      h_4 & h_5 & h_6 \\
+      h_7 & h_8 & 1
+      \end{bmatrix}
+      $$
+    </p>
+
+    <p>
+      Here, $p = (x, y, 1)$ and $p' = (x', y', 1)$ represent matching
+      points in the two images.
+      The homography has 8 unknown parameters because multiplying the
+      entire matrix by a constant does not change the resulting pixel
+      coordinates, so we can set the bottom-right entry to 1.
+    </p>
+
+    <p>
+      To recover H, I manually selected 8 matching points in each image.
+      Each point pair gives us two equations (one for x and one for y),
+      resulting in 16 equations for 8 unknowns. I arranged these into
+      a linear system $Ah = b$ and used least squares to find the
+      homography that best fits the selected points.
+    </p>
+
+    <h3>Set 1 Correspondences</h3>
+    <div class="grid-2">
+      <figure>
+        <img src="media/set1_im1_points.png" alt="Set 1 image 1 with correspondence points marked">
+        <figcaption>Wooden House Exterior</figcaption>
+      </figure>
+      <figure>
+        <img src="media/set1_im2_points.png" alt="Set 1 image 2 with correspondence points marked">
+        <figcaption>Wooden House Exterior (Reference)</figcaption>
+      </figure>
+    </div>
+
+    <h3>Set 2 Correspondences</h3>
+    <div class="grid-2">
+      <figure>
+        <img src="media/set2_im1_points.png" alt="Set 2 image 1 with correspondence points marked">
+        <figcaption>Winding Staircase</figcaption>
+      </figure>
+      <figure>
+        <img src="media/set2_im2_points.png" alt="Set 2 image 2 with correspondence points marked">
+        <figcaption>Winding Staircase (Reference)</figcaption>
+      </figure>
+    </div>
+
+    <p>Solving the least-squares system for each set gives the following recovered homographies (mapping image 1 to image 2):</p>
+    <p>$$
+    H_1 = \begin{bmatrix}
+    1.29656 & -0.00917 & -1914.53 \\
+    0.27585 & 1.27110 & -864.93 \\
+    6.940 \times 10^{-5} & 1.551 \times 10^{-5} & 1
+    \end{bmatrix}
+    $$</p>
+    <p>$$
+    H_2 = \begin{bmatrix}
+    0.24428 & -0.44148 & 3165.45 \\
+    -0.06263 & 0.68227 & 52.16 \\
+    -1.763 \times 10^{-4} & -4.323 \times 10^{-5} & 1
+    \end{bmatrix}
+    $$</p>
+    <br>
+
+    <h2>A.3 Warping the Images</h2>
+    <p>I implemented two image warping methods, nearest neighbor and bilinear interpolation. First, I use the homography to transform the four corners of the input image and determine the output bounds. Then, for each output pixel, I apply the inverse homography to find its corresponding location in the original image.</p>
+    <p>For nearest neighbor, I round to the closest source pixel and copy its color. For bilinear interpolation, I take a weighted average of the four surrounding pixels. Pixels that map outside the original image are left transparent using an alpha channel.</p>
+    <h3>Rectification</h3>
+    <p>To test my warping implementation, I rectified a rectangular object in an image. I manually selected its four corners and mapped them to the corners of a rectangle with fixed dimensions. I then computed the homography and warped the image using both interpolation methods to compare their results.</p>
+    <figure class="wide">
+      <img src="media/rect1_rectified.png" alt="Rectification of a poster: original, nearest-neighbor, and bilinear results">
+      <figcaption>Rectifying a wall poster</figcaption>
+    </figure>
+    <figure class="wide">
+      <img src="media/rect2_rectified.png" alt="Rectification of a laptop screen: original, nearest-neighbor, and bilinear results">
+      <figcaption>Rectifying a laptop screen to be front-facing</figcaption>
+    </figure>
+
+    <h3>Nearest Neighbor vs. Bilinear</h3>
+    <p>Both interpolation methods recover a convincingly rectangular poster and laptop screen. When zooming in a lot, the nearest-neighbor results show slightly more jagged edges while the bilinear results look slightly smoother due to the averaging of neighboring pixels. The difference is subtle at this resolution, but bilinear is the better default for photographic content.</p>
+    <p>On the other hand, bilinear interpolation requires reading and weighting four neighboring pixels per output pixel instead of one, which roughly doubles the runtime at these output resolutions (my warped outputs were on the order of 5000&ndash;8000 pixels per side):</p>
+    <table>
+      <thead>
+        <tr><th>Image</th><th>Nearest Neighbor</th><th>Bilinear</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Rect 1 (poster)</td><td>3.766 s</td><td>7.081 s</td></tr>
+        <tr><td>Rect 2 (laptop)</td><td>2.596 s</td><td>5.254 s</td></tr>
+      </tbody>
+    </table>
+    <p>So nearest neighbor is roughly 1.9&ndash;2x faster than bilinear, but for the final mosaics I still prefer bilinear since the quality gain outweighs the modest slowdown at this scale.</p>
+    <br>
+
+    <h2>A.4 Blending into a Mosaic</h2>
+    <p>
+      If you just paste one warped image on top of the other, you get an obvious seam wherever the
+      exposure or alignment is slightly off. To avoid that, we can blend the two images together instead
+      of picking one or the other at each pixel.
+    </p>
+    <p>
+      The solution I used was to give each image a confidence weight which starts at 1.0 in the center of
+      the photo and linearly reduces to 0 near its edges. Intuitively, the edges of a
+      photo are the least reliable part of a warp, so we want the final mosaic to rely mostly on the
+      center of each image and only lean on the edges of one photo where the other photo doesn't
+      cover that area at all.
+    </p>
+    <p>
+      I warp one image onto the other, then at every pixel I just take a weighted average of the two colors: $\text{mosaic} = \dfrac{w_1 \cdot \text{color}_1 + w_2 \cdot \text{color}_2}{w_1 + w_2}$.
+      Where only one image covers a pixel, that image's weight dominates, and
+      where both overlap, the colours blend from one photo to the other.
+    </p>
+
+    <p>
+      Below are the images and their mosaics. Set 1 and 3 are very smooth, but it's interesting how set 2's mosaic is especially stretched because of the large angle difference between the two original photos.
+    </p>
+    <h3>Set 1: Wooden House Exterior</h3>
+    <figure class="wide">
+      <img src="media/set1_mosaic.png" alt="Set 1 source images and blended mosaic">
+    </figure>
+    <h3>Set 2: Winding Staircase</h3>
+    <figure class="wide">
+      <img src="media/set2_mosaic.png" alt="Set 2 source images and blended mosaic">
+    </figure>
+    <h3>Set 3: Speaker in the Mirror</h3>
+    <figure class="wide">
+      <img src="media/set3_mosaic.png" alt="Set 3 source images and blended mosaic">
+    </figure>
+  </section>
+
+</div>
+
+<div class="page__footer">
+  <div class="page__footer-copyright">&copy; 2026 Aarav Desai</div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: "$$", right: "$$", display: true},
+        {left: "$", right: "$", display: false}
+      ]
+    });
+  });
+</script>
+
+</body>
+</html>
